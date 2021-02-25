@@ -20,6 +20,14 @@ public abstract class GamePhase implements Listener {
         this.playerList = PlayerList.INSTANCE;
     }
 
+    protected void startNextPhase() {
+        HandlerList.unregisterAll(this);
+        GamePhase nextPhase = getNextPhase();
+        nextPhase.init();
+        Bukkit.getPluginManager().registerEvents(nextPhase, plugin);
+        GameManager.INSTANCE.setPhase(nextPhase);
+    }
+
     protected void init() {
     }
 
@@ -31,15 +39,11 @@ public abstract class GamePhase implements Listener {
         return GameManager.INSTANCE.getTimer();
     }
 
-    protected abstract String getTimeString(int timer);
-
-    protected void startNextPhase() {
-        HandlerList.unregisterAll(this);
-        GamePhase nextPhase = getNextPhase();
-        nextPhase.init();
-        Bukkit.getPluginManager().registerEvents(nextPhase, plugin);
-        GameManager.INSTANCE.setPhase(nextPhase);
+    public int getBorder() {
+        return border;
     }
+
+    protected abstract String getTimeString(int timer);
 
     public int getAlivePlayers() {
         return (int) playerList.getAllPlayers().stream().filter(UHCPlayer::isAlive).count();
