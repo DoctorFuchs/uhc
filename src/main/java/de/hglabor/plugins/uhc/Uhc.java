@@ -1,5 +1,7 @@
 package de.hglabor.plugins.uhc;
 
+import de.hglabor.plugins.uhc.game.GameManager;
+import de.hglabor.plugins.uhc.game.scenarios.Netherless;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Uhc extends JavaPlugin {
@@ -7,6 +9,8 @@ public final class Uhc extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        GameManager gameManager = GameManager.INSTANCE;
+        gameManager.addScenario(Netherless.INSTANCE);
     }
 
     @Override
