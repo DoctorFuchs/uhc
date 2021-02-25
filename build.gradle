@@ -1,0 +1,53 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+ext.localProps = new Properties()
+try {
+    localProps.load(file("local.properties").newReader())
+} catch (Exception ignored) {
+    // scheiß drauf groovy ist kacke
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url = uri('https://papermc.io/repo/repository/maven-public/') }
+    maven { url = uri('https://oss.sonatype.org/content/groups/public/') }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+}
+
+group = 'de.hglabor.plugins'
+version = '0.0.1'
+description = 'Minecraft UHC in 1.16+'
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+
+shadowJar {
+    minimize()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
