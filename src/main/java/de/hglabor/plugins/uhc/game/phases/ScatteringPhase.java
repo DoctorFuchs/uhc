@@ -68,6 +68,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public void startNextPhase() {
+        Bukkit.broadcastMessage("next phase override sync");
         loadBar.removeAll();
         super.startNextPhase();
     }
@@ -76,7 +77,7 @@ public class ScatteringPhase extends GamePhase {
         if (playerList.getScatteringPlayers().size() > 0) {
             teleportPlayersRecursively(getRandomScatteringPlayer());
         } else {
-            this.startNextPhase();
+            Bukkit.getScheduler().runTask(plugin, this::startNextPhase);
         }
     }
 
@@ -89,7 +90,7 @@ public class ScatteringPhase extends GamePhase {
         for (UHCPlayer player : playerList.getScatteringPlayers()) {
             if (counter.get() > 4) counter.set(1);
             Corner corner = Corner.getCorner(counter.getAndIncrement());
-            player.setSpawnLocation(SpawnUtils.getCornerSpawn(corner, GameManager.INSTANCE.getBorder()));
+            player.setSpawnLocation(SpawnUtils.getCornerSpawn(corner, GameManager.INSTANCE.getBorderSize()));
         }
     }
 
@@ -111,6 +112,7 @@ public class ScatteringPhase extends GamePhase {
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent event) {
         UHCPlayer player = playerList.getPlayer(event.getPlayer());
+        Bukkit.broadcastMessage("yo");
         if (player.isAlive()) {
             event.setCancelled(true);
         }
@@ -128,6 +130,7 @@ public class ScatteringPhase extends GamePhase {
 
     @EventHandler
     private void onBlockBreak(BlockBreakEvent event) {
+        Bukkit.broadcastMessage(this.getType().name());
         event.setCancelled(true);
     }
 

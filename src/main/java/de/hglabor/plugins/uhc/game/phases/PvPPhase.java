@@ -2,11 +2,18 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.config.CKeys;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.utils.noriskutils.PotionUtils;
 
 public class PvPPhase extends GamePhase {
+    private final int shrinkInterval;
+    private int nextShrink;
+
     protected PvPPhase() {
-        super(60*60, PhaseType.PVP);
+        super(0, PhaseType.PVP);
+        this.nextShrink = UHCConfig.getInteger(CKeys.PVP_FIRST_SHRINK);
+        this.shrinkInterval = UHCConfig.getInteger(CKeys.PVP_SHRINK_INTERVAL);
     }
 
     @Override

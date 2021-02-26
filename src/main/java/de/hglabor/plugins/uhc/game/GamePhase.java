@@ -6,6 +6,7 @@ import de.hglabor.plugins.uhc.player.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class GamePhase implements Listener {

@@ -1,5 +1,6 @@
 package de.hglabor.plugins.uhc.game.phases;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
@@ -27,6 +28,11 @@ public class LobbyPhase extends GamePhase {
     }
 
     @Override
+    protected void init() {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @Override
     protected void tick(int timer) {
     }
 
@@ -46,10 +52,15 @@ public class LobbyPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    private void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         player.teleportAsync(lobby.getSpawnLocation());
+    }
+
+    @EventHandler
+    public void onPlayerJump(PlayerJumpEvent event) {
+        Bukkit.broadcastMessage("jump");
     }
 
     @EventHandler
@@ -103,8 +114,12 @@ public class LobbyPhase extends GamePhase {
     }
 
     @EventHandler
-    private void onFoodLevelChange(FoodLevelChangeEvent event) { event.setCancelled(true); }
+    private void onFoodLevelChange(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
+    }
 
     @EventHandler
-    private void onPlayerDropItem(PlayerDropItemEvent event) { event.setCancelled(true); }
+    private void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
+    }
 }

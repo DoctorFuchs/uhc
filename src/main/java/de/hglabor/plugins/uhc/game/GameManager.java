@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.game;
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
 import org.bukkit.Bukkit;
+import org.bukkit.WorldBorder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,13 +13,16 @@ public final class GameManager {
     public static final GameManager INSTANCE = new GameManager();
     private final Set<Scenario> scenarios;
     private final AtomicInteger timer;
+    private final WorldBorder border;
     private GamePhase phase;
-    private int border;
+    private int borderSize;
 
     private GameManager() {
         this.timer = new AtomicInteger();
         this.phase = new LobbyPhase();
         this.scenarios = new HashSet<>();
+        this.borderSize = 2000;
+        this.border = Bukkit.getWorld("world").getWorldBorder();
     }
 
     public void run() {
@@ -39,12 +43,12 @@ public final class GameManager {
         return getPhase().getType();
     }
 
-    public int getBorder() {
-        return border;
+    public int getBorderSize() {
+        return borderSize;
     }
 
-    public void setBorder(int border) {
-        this.border = border;
+    public void setBorderSize(int borderSize) {
+        this.borderSize = borderSize;
     }
 
     public GamePhase getPhase() {
@@ -59,11 +63,11 @@ public final class GameManager {
         timer.set(0);
     }
 
-    public void setTimer(int value) {
-        timer.set(value);
-    }
-
     public int getTimer() {
         return timer.get();
+    }
+
+    public void setTimer(int value) {
+        timer.set(value);
     }
 }
