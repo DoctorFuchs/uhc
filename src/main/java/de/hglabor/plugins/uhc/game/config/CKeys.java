@@ -8,10 +8,15 @@ public interface CKeys {
     String FARM_FARM_TIME = FARM + "." + "farmTime";
 
     String PVP = PHASE + "." + "pvp";
-    String PVP_FIRST_SHRINK = PHASE + "." + "firstShrink";
-    String PVP_SHRINK_INTERVAL = PHASE + "." + "shrinkInterval";
 
     String BORDER = "border";
-    String BORDER_MAX_SIZE = "border" + "." + "maxSize";
+    String BORDER_FIRST_SHRINK = BORDER + "." + "firstShrink";
+    String BORDER_START_SIZE = BORDER + "." + "startSize";
+    String BORDER_SHRINK_INTERVAL = BORDER + "." + "shrinkInterval";
+    String BORDER_MAX_SIZE = BORDER + "." + "maxSize";
+    /**
+     * Shrink size til border hits 500 mark
+     */
+    String BORDER_SHRINK_SIZE = "border" + "." + "shrinkSize";
 
 }

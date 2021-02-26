@@ -19,23 +19,13 @@ public final class ScoreboardManager implements Listener {
     private ScoreboardManager() {
     }
 
-    @EventHandler
-    private void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
-        ScoreboardFactory.create(uhcPlayer);
-        if (uhcPlayer.getScoreboard() == null) {
-            ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
-        }
-    }
-
     public static void setBasicScoreboardLayout(ScoreboardPlayer player) {
         String placeHolder = "-------------";
         ScoreboardFactory.addEntry(player, "placeHolder2", placeHolder, 5);
         ScoreboardFactory.addEntry(player, "time", "Start: " + TimeConverter.stringify(180), 4);
         ScoreboardFactory.addEntry(player, "players", "Players: " + Bukkit.getOnlinePlayers().size(), 3);
         ScoreboardFactory.addEntry(player, "kills", "Kills: 0", 2);
-        ScoreboardFactory.addEntry(player, "border", "Border: " + GameManager.INSTANCE.getBorderSize(), 1);
+        ScoreboardFactory.addEntry(player, "border", "Border: " + GameManager.INSTANCE.getBorder().getBorderSize(), 1);
         ScoreboardFactory.addEntry(player, "placeHolder1", placeHolder, 0);
     }
 
@@ -44,10 +34,21 @@ public final class ScoreboardManager implements Listener {
             uhcPlayer.getBukkitPlayer().ifPresent(player -> {
                 GamePhase phase = GameManager.INSTANCE.getPhase();
                 ScoreboardFactory.updateEntry(uhcPlayer, "time", phase.getTimeString(time));
-                ScoreboardFactory.updateEntry(uhcPlayer, "players", "Players: " + PlayerList.INSTANCE.getAlivePlayers().size());
+                ScoreboardFactory.updateEntry(uhcPlayer, "players", "Players: " + phase.getAlivePlayers());
                 ScoreboardFactory.updateEntry(uhcPlayer, "kills", "Kills: " + uhcPlayer.getKills().get());
-                ScoreboardFactory.updateEntry(uhcPlayer, "border", "Border: " + GameManager.INSTANCE.getBorderString());
+                ScoreboardFactory.updateEntry(uhcPlayer, "border", GameManager.INSTANCE.getBorder().getBorderString(time));
             });
         }
+    }
+
+    @EventHandler
+    private void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
+        if (uhcPlayer.getScoreboard() == null) {
+            ScoreboardFactory.create(uhcPlayer);
+            ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
+        }
+        player.setScoreboard(uhcPlayer.getScoreboard());
     }
 }

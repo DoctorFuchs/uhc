@@ -5,16 +5,13 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
-import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
-import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FarmPhase extends GamePhase {
     private final int finalHeal;
@@ -36,11 +33,14 @@ public class FarmPhase extends GamePhase {
     protected void tick(int timer) {
         announceNextPhase(timer);
         announceFinalHeal(timer);
+        if (timer > maxPhaseTime) {
+            this.startNextPhase();
+        }
     }
 
     private void announceFinalHeal(int timer) {
         int timeLeft = finalHeal - timer;
-        if (timeLeft % 2 == 0) {
+        if (timeLeft % (2 * 60) == 0) {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.finaHealIn", ImmutableMap.of("time", timeString));
         }
@@ -48,7 +48,7 @@ public class FarmPhase extends GamePhase {
 
     private void announceNextPhase(int timer) {
         int timeLeft = maxPhaseTime - timer;
-        if (timeLeft % 5 == 0) {
+        if (timeLeft % (5 * 60) == 0) {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.pvpIn", ImmutableMap.of("time", timeString));
         }

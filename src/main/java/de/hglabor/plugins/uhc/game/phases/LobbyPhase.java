@@ -1,13 +1,11 @@
 package de.hglabor.plugins.uhc.game.phases;
 
-import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
-import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.noriskutils.TimeConverter;
-import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -37,6 +35,16 @@ public class LobbyPhase extends GamePhase {
 
     @Override
     protected void tick(int timer) {
+        int timeLeft = maxPhaseTime - timer;
+        if (timeLeft == 0) {
+            this.startNextPhase();
+        }
+    }
+
+    @Override
+    public void startNextPhase() {
+        GameManager.INSTANCE.resetTimer();
+        super.startNextPhase();
     }
 
     @Override
@@ -60,11 +68,6 @@ public class LobbyPhase extends GamePhase {
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         player.teleportAsync(lobby.getSpawnLocation());
-    }
-
-    @EventHandler
-    public void onPlayerJump(PlayerJumpEvent event) {
-        Bukkit.broadcastMessage("jump");
     }
 
     @EventHandler

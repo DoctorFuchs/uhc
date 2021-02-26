@@ -1,5 +1,7 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
+import org.bukkit.Location;
+
 import java.util.Random;
 
 public enum Corner {
@@ -16,11 +18,6 @@ public enum Corner {
         this.zConverter = z;
     }
 
-    @FunctionalInterface
-    public interface Converter {
-        int convert(int value);
-    }
-
     public static Corner getCorner(int corner) {
         switch (corner) {
             case 1:
@@ -34,5 +31,25 @@ public enum Corner {
             default:
                 return values()[new Random().nextInt(values().length)];
         }
+    }
+
+    public static Corner getCorner(Location location) {
+        double x = location.getX();
+        double z = location.getZ();
+        if (x < 0 && z < 0) {
+            return NEG_NEG;
+        } else if (x > 0 && z > 0) {
+            return POS_POS;
+        } else if (x < 0 && z > 0) {
+            return NEG_POS;
+        } else if (x > 0 && z < 0) {
+            return POS_NEG;
+        }
+        return values()[new Random().nextInt(values().length)];
+    }
+
+    @FunctionalInterface
+    public interface Converter {
+        int convert(int value);
     }
 }

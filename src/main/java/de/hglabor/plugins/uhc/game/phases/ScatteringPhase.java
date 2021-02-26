@@ -68,7 +68,6 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public void startNextPhase() {
-        Bukkit.broadcastMessage("next phase override sync");
         loadBar.removeAll();
         super.startNextPhase();
     }
@@ -90,12 +89,13 @@ public class ScatteringPhase extends GamePhase {
         for (UHCPlayer player : playerList.getScatteringPlayers()) {
             if (counter.get() > 4) counter.set(1);
             Corner corner = Corner.getCorner(counter.getAndIncrement());
-            player.setSpawnLocation(SpawnUtils.getCornerSpawn(corner, GameManager.INSTANCE.getBorderSize()));
+            player.setSpawnLocation(SpawnUtils.getCornerSpawn(corner, GameManager.INSTANCE.getBorder().getBorderSize()));
         }
     }
 
     @Override
     protected void tick(int timer) {
+        GameManager.INSTANCE.resetTimer();
         ScatteringPhase.this.loadBar.setProgress((double) playerList.getAlivePlayers().size() / maxPlayers);
     }
 
