@@ -52,7 +52,7 @@ public class ScatteringPhase extends GamePhase {
     }
 
     private void teleportPlayersRecursively(UHCPlayer uhcPlayer) {
-        uhcPlayer.getPlayer().ifPresentOrElse(player -> {
+        uhcPlayer.getBukkitPlayer().ifPresentOrElse(player -> {
             player.teleportAsync(uhcPlayer.getSpawnLocation()).thenAccept(bool -> {
                 if (bool != null) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 1000));
@@ -100,8 +100,8 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @Override
-    protected String getTimeString(int timer) {
-        return null;
+    public String getTimeString(int timer) {
+        return "";
     }
 
     @Override
@@ -112,7 +112,6 @@ public class ScatteringPhase extends GamePhase {
     @EventHandler
     public void onPlayerJump(PlayerJumpEvent event) {
         UHCPlayer player = playerList.getPlayer(event.getPlayer());
-        Bukkit.broadcastMessage("yo");
         if (player.isAlive()) {
             event.setCancelled(true);
         }
@@ -130,7 +129,6 @@ public class ScatteringPhase extends GamePhase {
 
     @EventHandler
     private void onBlockBreak(BlockBreakEvent event) {
-        Bukkit.broadcastMessage(this.getType().name());
         event.setCancelled(true);
     }
 
@@ -160,8 +158,12 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @EventHandler
-    private void onFoodLevelChange(FoodLevelChangeEvent event) { event.setCancelled(true); }
+    private void onFoodLevelChange(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
+    }
 
     @EventHandler
-    private void onPlayerDropItem(PlayerDropItemEvent event) { event.setCancelled(true); }
+    private void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
+    }
 }

@@ -5,6 +5,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.utils.noriskutils.PotionUtils;
+import de.hglabor.utils.noriskutils.TimeConverter;
 
 public class PvPPhase extends GamePhase {
     private final int shrinkInterval;
@@ -18,7 +19,7 @@ public class PvPPhase extends GamePhase {
 
     @Override
     protected void init() {
-        playerList.getAlivePlayers().forEach(player -> player.getPlayer().ifPresent(PotionUtils::removePotionEffects));
+        playerList.getAlivePlayers().forEach(player -> player.getBukkitPlayer().ifPresent(PotionUtils::removePotionEffects));
     }
 
     @Override
@@ -27,8 +28,12 @@ public class PvPPhase extends GamePhase {
     }
 
     @Override
-    protected String getTimeString(int timer) {
-        return null;
+    public String getTimeString(int timer) {
+        if (timer >= 3600) {
+            return TimeConverter.stringify(timer, "%02d:%02d:%02d");
+        } else {
+            return TimeConverter.stringify(timer);
+        }
     }
 
     @Override

@@ -5,9 +5,12 @@ import de.hglabor.plugins.uhc.game.command.StartCommand;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.scenarios.Netherless;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
+import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
+import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Uhc extends JavaPlugin {
@@ -28,10 +31,16 @@ public final class Uhc extends JavaPlugin {
 
         CommandAPI.onEnable(this);
         registerCommand();
+        registerListener();
     }
 
     public void registerCommand() {
         new StartCommand();
+    }
+
+    public void registerListener() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
     }
 
     @Override

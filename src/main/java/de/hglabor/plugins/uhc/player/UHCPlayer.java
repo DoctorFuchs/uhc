@@ -1,5 +1,6 @@
 package de.hglabor.plugins.uhc.player;
 
+import de.hglabor.utils.noriskutils.scoreboard.ScoreboardPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -7,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public interface UHCPlayer {
+public interface UHCPlayer extends ScoreboardPlayer {
     UUID getUuid();
 
     boolean isAlive();
@@ -20,7 +21,7 @@ public interface UHCPlayer {
 
     void setStatus(UserStatus status);
 
-    Optional<Player> getPlayer();
+    Optional<Player> getBukkitPlayer();
 
     Location getSpawnLocation();
 

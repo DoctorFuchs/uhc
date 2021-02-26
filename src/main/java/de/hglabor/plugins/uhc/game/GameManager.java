@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
+import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldBorder;
 
@@ -30,7 +31,7 @@ public final class GameManager {
         Bukkit.getScheduler().runTaskTimer(Uhc.getPlugin(), () -> {
             final int CURRENT_TIME = timer.getAndIncrement();
             phase.tick(CURRENT_TIME);
-            // ScoreboardManager.updateForEveryone(phase.getTimeString(CURRENT_TIME));
+            ScoreboardManager.updateForEveryone(CURRENT_TIME);
             // StaffModeManager.INSTANCE.getPlayerHider().sendHideInformation();
         }, 0, 20L);
     }
@@ -45,6 +46,10 @@ public final class GameManager {
 
     public int getBorderSize() {
         return borderSize;
+    }
+
+    public String getBorderString() {
+        return borderSize + "";
     }
 
     public void setBorderSize(int borderSize) {

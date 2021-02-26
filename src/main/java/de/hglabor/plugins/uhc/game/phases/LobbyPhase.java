@@ -5,6 +5,8 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
+import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
+import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class LobbyPhase extends GamePhase {
     }
 
     @Override
-    protected String getTimeString(int timer) {
+    public String getTimeString(int timer) {
         return null;
     }
 

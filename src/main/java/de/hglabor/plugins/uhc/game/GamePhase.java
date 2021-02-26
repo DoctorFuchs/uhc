@@ -43,7 +43,7 @@ public abstract class GamePhase implements Listener {
         return GameManager.INSTANCE.getTimer();
     }
 
-    protected abstract String getTimeString(int timer);
+    public abstract String getTimeString(int timer);
 
     public int getAlivePlayers() {
         return (int) playerList.getAllPlayers().stream().filter(UHCPlayer::isAlive).count();
