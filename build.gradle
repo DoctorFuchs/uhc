@@ -33,6 +33,7 @@ repositories {
 
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:craftbukkit:1.16.5-R0.1-SNAPSHOT'
     compile 'de.hglabor:hglabor-utils:0.0.4'
     compile 'dev.jorel:commandapi-shade:5.8'
 }
