@@ -13,6 +13,7 @@ public final class GameManager {
     private final Set<Scenario> scenarios;
     private final AtomicInteger timer;
     private GamePhase phase;
+    private int border;
 
     private GameManager() {
         this.timer = new AtomicInteger();
@@ -32,6 +33,18 @@ public final class GameManager {
 
     public void addScenario(Scenario scenario) {
         scenarios.add(scenario);
+    }
+
+    public PhaseType getPhaseType() {
+        return getPhase().getType();
+    }
+
+    public int getBorder() {
+        return border;
+    }
+
+    public void setBorder(int border) {
+        this.border = border;
     }
 
     public GamePhase getPhase() {

@@ -32,4 +32,12 @@ public final class PlayerList {
     public List<UHCPlayer> getAlivePlayers() {
         return players.values().stream().filter(User::isAlive).collect(Collectors.toList());
     }
+
+    public List<UHCPlayer> getLobbyPlayers() {
+        return players.values().stream().filter(user -> user.getStatus().equals(UserStatus.LOBBY)).collect(Collectors.toList());
+    }
+
+    public List<UHCPlayer> getScatteringPlayers() {
+        return players.values().stream().filter(user -> user.getStatus().equals(UserStatus.SCATTERING)).collect(Collectors.toList());
+    }
 }

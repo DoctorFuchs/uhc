@@ -2,7 +2,11 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -12,11 +16,16 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 
 public class LobbyPhase extends GamePhase {
+    private final World lobby;
+
     public LobbyPhase() {
         super(60);
+        this.lobby = Bukkit.getWorld("lobby");
     }
 
     @Override
@@ -40,7 +49,19 @@ public class LobbyPhase extends GamePhase {
 
     @Override
     protected GamePhase getNextPhase() {
-        return null;
+        return new ScatteringPhase();
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        UHCPlayer uhcPlayer = playerList.getPlayer(player);
+        player.teleportAsync(lobby.getSpawnLocation());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        playerList.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

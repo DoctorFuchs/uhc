@@ -12,7 +12,6 @@ public abstract class GamePhase implements Listener {
     protected final JavaPlugin plugin;
     protected final PlayerList playerList;
     protected final int maxPhaseTime;
-    protected int border;
 
     protected GamePhase(int maxPhaseTime) {
         this.maxPhaseTime = maxPhaseTime;
@@ -20,7 +19,7 @@ public abstract class GamePhase implements Listener {
         this.playerList = PlayerList.INSTANCE;
     }
 
-    protected void startNextPhase() {
+    public void startNextPhase() {
         HandlerList.unregisterAll(this);
         GamePhase nextPhase = getNextPhase();
         nextPhase.init();
@@ -37,10 +36,6 @@ public abstract class GamePhase implements Listener {
 
     public int getRawTime() {
         return GameManager.INSTANCE.getTimer();
-    }
-
-    public int getBorder() {
-        return border;
     }
 
     protected abstract String getTimeString(int timer);
