@@ -56,7 +56,7 @@ public class FarmPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return TimeConverter.stringify(timer);
+        return "Duration: " + TimeConverter.stringify(timer);
     }
 
     @Override

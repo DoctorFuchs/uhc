@@ -101,7 +101,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return "";
+        return "Loading: " + playerList.getAlivePlayers().size() / maxPlayers;
     }
 
     @Override

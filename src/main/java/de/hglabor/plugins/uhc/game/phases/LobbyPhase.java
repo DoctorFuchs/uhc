@@ -6,6 +6,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
+import de.hglabor.utils.noriskutils.TimeConverter;
 import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -45,7 +46,8 @@ public class LobbyPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return null;
+        int timeLeft = maxPhaseTime - timer;
+        return "Start: " + TimeConverter.stringify(timeLeft);
     }
 
     @Override

@@ -29,10 +29,11 @@ public class PvPPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
+        String duration = "Duration: ";
         if (timer >= 3600) {
-            return TimeConverter.stringify(timer, "%02d:%02d:%02d");
+            return duration + TimeConverter.stringify(timer, "%02d:%02d:%02d");
         } else {
-            return TimeConverter.stringify(timer);
+            return duration + TimeConverter.stringify(timer);
         }
     }
 
