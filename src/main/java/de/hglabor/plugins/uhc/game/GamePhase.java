@@ -12,9 +12,11 @@ public abstract class GamePhase implements Listener {
     protected final JavaPlugin plugin;
     protected final PlayerList playerList;
     protected final int maxPhaseTime;
+    protected final PhaseType type;
 
-    protected GamePhase(int maxPhaseTime) {
+    protected GamePhase(int maxPhaseTime, PhaseType type) {
         this.maxPhaseTime = maxPhaseTime;
+        this.type = type;
         this.plugin = Uhc.getPlugin();
         this.playerList = PlayerList.INSTANCE;
     }
@@ -32,7 +34,9 @@ public abstract class GamePhase implements Listener {
 
     protected abstract void tick(int timer);
 
-    public abstract PhaseType getType();
+    public PhaseType getType() {
+        return type;
+    }
 
     public int getRawTime() {
         return GameManager.INSTANCE.getTimer();

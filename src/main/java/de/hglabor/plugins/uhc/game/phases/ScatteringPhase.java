@@ -14,19 +14,27 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScatteringPhase extends GamePhase {
-    private BossBar loadBar;
+    private final BossBar loadBar;
     private int maxPlayers;
 
     protected ScatteringPhase() {
-        super(0);
+        super(0, PhaseType.SCATTERING);
         this.loadBar = Bukkit.createBossBar("Scattering", BarColor.GREEN, BarStyle.SOLID);
     }
 
@@ -34,7 +42,7 @@ public class ScatteringPhase extends GamePhase {
     protected void init() {
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
-        Bukkit.getOnlinePlayers().forEach(player -> loadBar.addPlayer(player));
+        Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
@@ -50,19 +58,28 @@ public class ScatteringPhase extends GamePhase {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 1000));
                     uhcPlayer.setStatus(UserStatus.INGAME);
                 }
-                if (playerList.getScatteringPlayers().size() > 0) {
-                    teleportPlayersRecursively(getRandomScatteringPlayer());
-                }
+                teleportOrNextPhase();
             });
         }, () -> {
             playerList.remove(uhcPlayer.getUuid());
-            if (playerList.getScatteringPlayers().size() > 0) {
-                teleportPlayersRecursively(getRandomScatteringPlayer());
-            }
+            teleportOrNextPhase();
         });
     }
 
-    @NotNull
+    @Override
+    public void startNextPhase() {
+        loadBar.removeAll();
+        super.startNextPhase();
+    }
+
+    private void teleportOrNextPhase() {
+        if (playerList.getScatteringPlayers().size() > 0) {
+            teleportPlayersRecursively(getRandomScatteringPlayer());
+        } else {
+            this.startNextPhase();
+        }
+    }
+
     private UHCPlayer getRandomScatteringPlayer() {
         return playerList.getScatteringPlayers().stream().findAny().get();
     }
@@ -82,11 +99,6 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @Override
-    public PhaseType getType() {
-        return PhaseType.SCATTERING;
-    }
-
-    @Override
     protected String getTimeString(int timer) {
         return null;
     }
@@ -97,15 +109,56 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
     public void onPlayerJump(PlayerJumpEvent event) {
         UHCPlayer player = playerList.getPlayer(event.getPlayer());
         if (player.isAlive()) {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    private void onEntityDamage(EntityDamageEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onBlockPlace(BlockPlaceEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onBlockBreak(BlockBreakEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onInventoryClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onPlayerInteract(PlayerInteractEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onVehicleDamage(VehicleDamageEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onHangingBreak(HangingBreakEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    private void onFoodLevelChange(FoodLevelChangeEvent event) { event.setCancelled(true); }
+
+    @EventHandler
+    private void onPlayerDropItem(PlayerDropItemEvent event) { event.setCancelled(true); }
 }

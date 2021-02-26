@@ -12,29 +12,22 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 
 public class LobbyPhase extends GamePhase {
     private final World lobby;
 
     public LobbyPhase() {
-        super(60);
+        super(60, PhaseType.LOBBY);
         this.lobby = Bukkit.getWorld("lobby");
     }
 
     @Override
     protected void tick(int timer) {
-    }
-
-    @Override
-    public PhaseType getType() {
-        return PhaseType.LOBBY;
     }
 
     @Override
@@ -60,52 +53,58 @@ public class LobbyPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    private void onPlayerQuit(PlayerQuitEvent event) {
         playerList.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void onCreatureSpawn(CreatureSpawnEvent event) {
+    private void onCreatureSpawn(CreatureSpawnEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
+    private void onEntityDamage(EntityDamageEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
+    private void onBlockPlace(BlockPlaceEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
+    private void onBlockBreak(BlockBreakEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    private void onInventoryClick(InventoryClickEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    private void onPlayerInteract(PlayerInteractEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+    private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onVehicleDamage(VehicleDamageEvent event) {
+    private void onVehicleDamage(VehicleDamageEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void onHangingBreak(HangingBreakEvent event) {
+    private void onHangingBreak(HangingBreakEvent event) {
         event.setCancelled(true);
     }
+
+    @EventHandler
+    private void onFoodLevelChange(FoodLevelChangeEvent event) { event.setCancelled(true); }
+
+    @EventHandler
+    private void onPlayerDropItem(PlayerDropItemEvent event) { event.setCancelled(true); }
 }
