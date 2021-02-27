@@ -7,7 +7,7 @@ public interface CKeys {
     String LOBBY_START_TIME = LOBBY + "." + "startTime";
 
     String SCATTER = PHASE + "." + "scatter";
-    String SCATTER_TELEPORT_DELAY = SCATTER + "." + "teleportDelayjk";
+    String SCATTER_TELEPORT_DELAY = SCATTER + "." + "teleportDelay";
 
     String FARM = PHASE + "." + "farm";
     String FARM_FINAL_HEAL = FARM + "." + "finalHeal";

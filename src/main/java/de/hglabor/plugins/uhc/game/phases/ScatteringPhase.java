@@ -46,6 +46,7 @@ public class ScatteringPhase extends GamePhase {
         UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
+        loadBar.setProgress(0);
         Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
         if (Teams.INSTANCE.isEnabled()) {
 
@@ -106,7 +107,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return "Loading: " + playerList.getAlivePlayers().size() / maxPlayers;
+        return ChatColor.AQUA + "Loading: " + ChatColor.GREEN + +playerList.getAlivePlayers().size() / maxPlayers;
     }
 
     @Override
@@ -115,24 +116,21 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        event.setKickMessage(ChatColor.RED + "You can't log in during scattering");
-        event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_FULL);
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().kickPlayer(ChatColor.RED + "You can't log in during scattering");
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
-         playerList.remove(player.getUniqueId());
+        playerList.remove(player.getUniqueId());
     }
 
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("group.mod") || player.isOp()) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(!player.hasPermission("group.mod") && !player.isOp());
     }
 
     @EventHandler

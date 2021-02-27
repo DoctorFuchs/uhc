@@ -35,7 +35,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(RodKnockback.INSTANCE);
         gameManager.addScenario(Teams.INSTANCE);
         gameManager.addScenario(Timebomb.INSTANCE);
-        gameManager.run();
+        GameManager.INSTANCE.run();
 
         CommandAPI.onEnable(this);
         registerCommand();
@@ -49,6 +49,8 @@ public final class Uhc extends JavaPlugin {
     public void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
+        CutClean.INSTANCE.setEnabled(true);
+        pluginManager.registerEvents(CutClean.INSTANCE, this);
     }
 
     @Override

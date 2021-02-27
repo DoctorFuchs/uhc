@@ -35,8 +35,8 @@ public final class ScoreboardManager implements Listener {
             uhcPlayer.getBukkitPlayer().ifPresent(player -> {
                 GamePhase phase = GameManager.INSTANCE.getPhase();
                 ScoreboardFactory.updateEntry(uhcPlayer, "time", phase.getTimeString(time));
-                ScoreboardFactory.updateEntry(uhcPlayer, "players", "Players: " + phase.getAlivePlayers());
-                ScoreboardFactory.updateEntry(uhcPlayer, "kills", "Kills: " + uhcPlayer.getKills().get());
+                ScoreboardFactory.updateEntry(uhcPlayer, "players", ChatColor.AQUA + "Players: " + ChatColor.GREEN + phase.getAlivePlayers());
+                ScoreboardFactory.updateEntry(uhcPlayer, "kills", ChatColor.AQUA + "Kills: " + ChatColor.GREEN + uhcPlayer.getKills().get());
                 ScoreboardFactory.updateEntry(uhcPlayer, "border", GameManager.INSTANCE.getBorder().getBorderString(time));
             });
         }

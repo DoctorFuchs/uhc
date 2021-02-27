@@ -11,7 +11,54 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CutClean extends Scenario {
+    public final static CutClean INSTANCE = new CutClean();
+
+    private CutClean() {
+        super("CutClean", new ItemBuilder(Material.IRON_INGOT).build());
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (isEnabled()) {
+            Block block = event.getBlock();
+            for (CutCleanItems item : CutCleanItems.values()) {
+                if (item.name().equalsIgnoreCase(block.getType().name())) {
+                    event.setDropItems(false);
+                    block.getWorld().dropItem(block.getLocation(), new ItemStack(item.replacement));
+                    ExperienceOrb orb = (ExperienceOrb) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                    orb.setExperience(item.xpAmount);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (isEnabled()) {
+            List<ItemStack> toDelete = new ArrayList<>();
+            for (ItemStack drop : event.getDrops()) {
+                for (CutCleanItems ccItem : CutCleanItems.values()) {
+                    if (ccItem.name().equalsIgnoreCase(drop.getType().toString())) {
+                        toDelete.add(drop);
+                    }
+                }
+            }
+            for (ItemStack itemStack : toDelete) {
+                for (CutCleanItems ccItem : CutCleanItems.values()) {
+                    if (ccItem.name().equalsIgnoreCase(itemStack.getType().toString())) {
+                        event.getDrops().add(new ItemStack(ccItem.replacement, itemStack.getAmount()));
+                    }
+                }
+            }
+            event.getDrops().removeAll(toDelete);
+        }
+    }
+
     private enum CutCleanItems {
         // Blocks
         IRON_ORE(Material.IRON_INGOT, 2),
@@ -37,43 +84,6 @@ public class CutClean extends Scenario {
 
         CutCleanItems(Material replacement) {
             this.replacement = replacement;
-        }
-    }
-
-    public final static CutClean INSTANCE = new CutClean();
-
-    private CutClean() {
-        super("CutClean", new ItemBuilder(Material.IRON_INGOT).build());
-    }
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        if (isEnabled()) {
-            Block block = event.getBlock();
-            for (CutCleanItems item : CutCleanItems.values()) {
-                if (item.name().equalsIgnoreCase(block.getType().name())) {
-                    block.getDrops().clear();
-                    ExperienceOrb orb = (ExperienceOrb) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
-                    orb.setExperience(item.xpAmount);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        if (isEnabled()) {
-            for (ItemStack drop : event.getDrops()) {
-                for (CutCleanItems ccItem : CutCleanItems.values()) {
-                    if (ccItem.name().equalsIgnoreCase(drop.getType().toString())) {
-                        event.getDrops().remove(drop);
-                        event.getDrops().remove(new ItemStack(ccItem.replacement, drop.getAmount()));
-                    }
-                }
-            }
-            if (event.getEntityType() == EntityType.COW) {
-                event.getDrops().add(new ItemStack(Material.LEATHER));
-            }
         }
     }
 }

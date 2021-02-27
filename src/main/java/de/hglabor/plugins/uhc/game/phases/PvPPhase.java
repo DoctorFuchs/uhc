@@ -6,6 +6,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -30,11 +31,10 @@ public class PvPPhase extends IngamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        String duration = "Duration: ";
         if (timer >= 3600) {
-            return duration + TimeConverter.stringify(timer, "%02d:%02d:%02d");
+            return ChatColor.AQUA + "Duration: " + ChatColor.GREEN + TimeConverter.stringify(timer, "%02d:%02d:%02d");
         } else {
-            return duration + TimeConverter.stringify(timer);
+            return ChatColor.AQUA + "Duration: " + ChatColor.GREEN + TimeConverter.stringify(timer);
         }
     }
 

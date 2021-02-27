@@ -7,13 +7,13 @@ import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.localization.Localization;
 import de.hglabor.utils.noriskutils.ChatUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public abstract class IngamePhase extends GamePhase {
@@ -29,22 +29,16 @@ public abstract class IngamePhase extends GamePhase {
     }
 
     @EventHandler
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        Player player = event.getPlayer();
-        UHCPlayer uhcPlayer = playerList.getPlayer(player);
-        if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {
-            event.setKickMessage(Localization.INSTANCE.getMessage("ingamePhase.join.death", ChatUtils.getPlayerLocale(player)));
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-        }
-    }
-
-    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         if (uhcPlayer.getStatus().equals(UserStatus.OFFLINE)) {
             uhcPlayer.setStatus(UserStatus.INGAME);
+        } else if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {
+            player.kickPlayer(Localization.INSTANCE.getMessage("ingamePhase.join.death", ChatUtils.getPlayerLocale(player)));
+        } else if (uhcPlayer.getStatus().equals(UserStatus.LOBBY)) {
+            player.kickPlayer(ChatColor.RED + "GAME ALREADY STARTED");
         }
     }
 

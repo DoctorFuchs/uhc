@@ -1,6 +1,5 @@
 package de.hglabor.plugins.uhc.game.mechanics.border;
 
-import com.google.common.collect.ImmutableMap;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -11,7 +10,6 @@ import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
-import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -57,7 +55,7 @@ public class Border {
             borderSize = nextBorderSize;
             recalculateBorder();
             if (cutInHalf && borderSize <= 100) {
-               // createBorder(Bukkit.getWorld("world"), borderSize, 60, 10);
+                // createBorder(Bukkit.getWorld("world"), borderSize, 60, 10);
             } else {
             }
             overWorld.getWorldBorder().setSize(borderSize * 2);
@@ -77,16 +75,16 @@ public class Border {
                 switch (outside) {
                     case X:
                         x = corner.xConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()).clone().add(0,1,0));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()).clone().add(0, 1, 0));
                         break;
                     case Z:
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0,1,0));
+                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0, 1, 0));
                         break;
                     case BOTH:
                         x = corner.xConverter.convert(coord);
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0,1,0));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0, 1, 0));
                         break;
                 }
             });
@@ -118,9 +116,12 @@ public class Border {
         int timeLeft = nextShrink - time;
         if (timeLeft <= 300) {
             if (timeLeft % 60 == 0 || timeLeft <= 5 || timeLeft == 10) {
-                ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
+              /*   ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
                         "size", String.valueOf(nextBorderSize),
-                        "time", TimeConverter.stringify(timeLeft)));
+                        "time", TimeConverter.stringify(timeLeft)));*/
+                Bukkit.broadcastMessage(ChatColor.AQUA + "Border will be shrinked to " +
+                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize +ChatColor.RESET + ChatColor.AQUA +
+                        " in " + ChatColor.GREEN + TimeConverter.stringify(timeLeft));
             }
         }
     }
@@ -130,7 +131,7 @@ public class Border {
     }
 
     public String getBorderString(int time) {
-        return "Border: " + borderSize;
+        return ChatColor.AQUA + "Border: " + ChatColor.GREEN + borderSize;
     }
 
     public int getBorderSize() {

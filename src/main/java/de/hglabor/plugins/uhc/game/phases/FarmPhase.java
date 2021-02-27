@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class FarmPhase extends IngamePhase {
     private final int finalHeal;
+    private boolean wasFinalHeal;
 
     protected FarmPhase() {
         super(UHCConfig.getInteger(CKeys.FARM_FARM_TIME), PhaseType.FARM);
@@ -52,8 +53,10 @@ public class FarmPhase extends IngamePhase {
     }
 
     private void handleFinalHeal(int timer) {
+        if (wasFinalHeal) return;
         int timeLeft = finalHeal - timer;
         if (timeLeft == 0) {
+            wasFinalHeal = true;
             Bukkit.getOnlinePlayers().forEach(player -> player.setHealth(20));
             Bukkit.broadcastMessage(ChatColor.AQUA.toString() + ChatColor.BOLD + "Final Heal");
         } else if (timeLeft % (2 * 60) == 0) {
@@ -74,7 +77,7 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return "Duration: " + TimeConverter.stringify(timer);
+    return ChatColor.AQUA + "Duration: " + ChatColor.GREEN + TimeConverter.stringify(timer);
     }
 
     @Override
