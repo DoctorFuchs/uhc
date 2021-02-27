@@ -5,13 +5,17 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.player.UHCPlayer;
+import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class FarmPhase extends GamePhase {
     private final int finalHeal;
@@ -62,6 +66,19 @@ public class FarmPhase extends GamePhase {
     @Override
     protected GamePhase getNextPhase() {
         return new PvPPhase();
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        UHCPlayer uhcPlayer = playerList.getPlayer(player);
+        if (player.hasPermission("hglabor.spectator")) {
+            player.setGameMode(GameMode.SPECTATOR);
+            uhcPlayer.setStatus(UserStatus.SPECTATOR);
+        } else {
+            player.kickPlayer("Death");
+            uhcPlayer.setStatus(UserStatus.ELIMINATED);
+        }
     }
 
     @EventHandler

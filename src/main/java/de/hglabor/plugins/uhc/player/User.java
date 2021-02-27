@@ -16,10 +16,11 @@ public class User implements UHCPlayer {
     private final UUID uuid;
     private final String name;
     private final AtomicInteger kills;
-    private Location spawn;
-    private UserStatus status;
     protected Scoreboard scoreboard;
     protected Objective objective;
+    private Location spawn;
+    private UserStatus status;
+    private boolean isTeleporting;
 
     public User(UUID uuid, String name) {
         this.status = UserStatus.LOBBY;
@@ -39,8 +40,19 @@ public class User implements UHCPlayer {
     }
 
     @Override
+    public boolean isTeleporting() { return isTeleporting; }
+
+    @Override
+    public void setTeleporting(boolean value) { isTeleporting = value; }
+
+    @Override
     public UserStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -51,11 +63,6 @@ public class User implements UHCPlayer {
     @Override
     public AtomicInteger getKills() {
         return kills;
-    }
-
-    @Override
-    public void setStatus(UserStatus status) {
-        this.status = status;
     }
 
     @Override

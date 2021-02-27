@@ -1,10 +1,10 @@
 package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
-import de.hglabor.plugins.uhc.game.mechanics.Border;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
+import de.hglabor.plugins.uhc.game.border.Border;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,9 +48,7 @@ public final class GameManager {
 
     public GamePhase getPhase() { return phase; }
 
-    public void setPhase(GamePhase phase) {
-        this.phase = phase;
-    }
+    public void setPhase(GamePhase phase) { this.phase = phase; }
 
     public void resetTimer() {
         timer.set(0);

@@ -13,6 +13,10 @@ public interface UHCPlayer extends ScoreboardPlayer {
 
     boolean isAlive();
 
+    boolean isTeleporting();
+
+    void setTeleporting(boolean value);
+
     UserStatus getStatus();
 
     String getName();

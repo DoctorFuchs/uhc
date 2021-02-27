@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.mechanics;
+package de.hglabor.plugins.uhc.game.border;
 
 import org.bukkit.Location;
 

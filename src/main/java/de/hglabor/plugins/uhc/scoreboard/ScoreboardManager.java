@@ -8,6 +8,7 @@ import de.hglabor.utils.noriskutils.TimeConverter;
 import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import de.hglabor.utils.noriskutils.scoreboard.ScoreboardPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +21,7 @@ public final class ScoreboardManager implements Listener {
     }
 
     public static void setBasicScoreboardLayout(ScoreboardPlayer player) {
-        String placeHolder = "-------------";
+        String placeHolder = ChatColor.STRIKETHROUGH + "             ";
         ScoreboardFactory.addEntry(player, "placeHolder2", placeHolder, 5);
         ScoreboardFactory.addEntry(player, "time", "Start: " + TimeConverter.stringify(180), 4);
         ScoreboardFactory.addEntry(player, "players", "Players: " + Bukkit.getOnlinePlayers().size(), 3);

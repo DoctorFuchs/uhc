@@ -3,9 +3,13 @@ package de.hglabor.plugins.uhc.game.phases;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.Border;
+import de.hglabor.plugins.uhc.game.border.Border;
+import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PvPPhase extends GamePhase {
 
@@ -40,5 +44,13 @@ public class PvPPhase extends GamePhase {
     @Override
     protected GamePhase getNextPhase() {
         return null;
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            UHCPlayer player = playerList.getPlayer((Player) event.getEntity());
+            if (player.isTeleporting()) event.setCancelled(true);
+        }
     }
 }

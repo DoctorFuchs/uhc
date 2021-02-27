@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.mechanics;
+package de.hglabor.plugins.uhc.game.border;
 
 import com.google.common.collect.ImmutableMap;
 import com.sk89q.worldedit.EditSession;
@@ -66,19 +66,22 @@ public class Border {
                 Outside outside = Outside.get(location, borderSize);
                 int coord = borderSize - 5;
                 int x, z;
+                if (outside != Outside.INSIDE) {
+                    uhcPlayer.setTeleporting(true);
+                }
                 switch (outside) {
                     case X:
                         x = corner.xConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ())).thenAccept(bool -> uhcPlayer.setTeleporting(false));
                         break;
                     case Z:
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
+                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z)).thenAccept(bool -> uhcPlayer.setTeleporting(false));
                         break;
                     case BOTH:
                         x = corner.xConverter.convert(coord);
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z)).thenAccept(bool -> uhcPlayer.setTeleporting(false));
                         break;
                 }
             });
