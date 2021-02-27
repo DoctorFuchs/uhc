@@ -34,8 +34,7 @@ public class Timebomb extends Scenario {
         if (isEnabled()) {
             Player player = event.getEntity();
             ArrayList<ItemStack> items = new ArrayList<>(event.getDrops());
-            ItemStack item = new ItemStack(Material.GOLDEN_APPLE);
-            items.add(item);
+            items.add(GoldenHead.itemStack);
             event.getDrops().clear();
             TBThread thread = new TBThread(player.getLocation().getBlock().getLocation(), items, 45);
             thread.placeAndFillChest();
