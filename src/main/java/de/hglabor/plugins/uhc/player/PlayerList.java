@@ -17,6 +17,10 @@ public final class PlayerList {
         return players.computeIfAbsent(player.getUniqueId(), uuid -> new User(uuid, player.getName()));
     }
 
+    public Optional<UHCPlayer> getPlayer(UUID uuid) {
+        return Optional.ofNullable(players.get(uuid));
+    }
+
     public void remove(UUID uuid) {
         players.remove(uuid);
     }

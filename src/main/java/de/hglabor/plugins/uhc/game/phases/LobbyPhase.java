@@ -1,10 +1,13 @@
 package de.hglabor.plugins.uhc.game.phases;
 
-import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.config.CKeys;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
+import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -23,17 +26,28 @@ public class LobbyPhase extends GamePhase {
     private final World lobby;
 
     public LobbyPhase() {
-        super(60, PhaseType.LOBBY);
+        super(UHCConfig.getInteger(CKeys.LOBBY_START_TIME), PhaseType.LOBBY);
         this.lobby = Bukkit.getWorld("lobby");
     }
 
     @Override
     protected void init() {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        UHCConfig.setLobbySettings(lobby);
     }
 
     @Override
     protected void tick(int timer) {
+        int timeLeft = maxPhaseTime - timer;
+        if (timeLeft == 0) {
+            this.startNextPhase();
+        }
+    }
+
+    @Override
+    public void startNextPhase() {
+        GameManager.INSTANCE.resetTimer();
+        super.startNextPhase();
     }
 
     @Override
@@ -42,8 +56,9 @@ public class LobbyPhase extends GamePhase {
     }
 
     @Override
-    protected String getTimeString(int timer) {
-        return null;
+    public String getTimeString(int timer) {
+        int timeLeft = maxPhaseTime - timer;
+        return "Start: " + TimeConverter.stringify(timeLeft);
     }
 
     @Override
@@ -53,18 +68,15 @@ public class LobbyPhase extends GamePhase {
 
     @EventHandler
     private void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         player.teleportAsync(lobby.getSpawnLocation());
     }
 
     @EventHandler
-    public void onPlayerJump(PlayerJumpEvent event) {
-        Bukkit.broadcastMessage("jump");
-    }
-
-    @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
         playerList.remove(event.getPlayer().getUniqueId());
     }
 

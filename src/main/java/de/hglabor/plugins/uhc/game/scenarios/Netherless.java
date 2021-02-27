@@ -15,7 +15,7 @@ public class Netherless extends Scenario {
 
     @EventHandler
     public void onPortalCreate(PortalCreateEvent event) {
-        if (!isEnabled()) {
+        if (isEnabled()) {
             if (event.getReason().equals(PortalCreateEvent.CreateReason.FIRE)) {
                 event.setCancelled(true);
             }
