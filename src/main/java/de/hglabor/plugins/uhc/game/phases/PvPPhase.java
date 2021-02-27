@@ -5,7 +5,6 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.border.Border;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
-import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,6 @@ public class PvPPhase extends IngamePhase {
 
     @Override
     protected void init() {
-        playerList.getAlivePlayers().forEach(player -> player.getBukkitPlayer().ifPresent(PotionUtils::removePotionEffects));
     }
 
     @Override

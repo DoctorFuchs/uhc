@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class FarmPhase extends IngamePhase {
     private final int finalHeal;
@@ -43,15 +44,18 @@ public class FarmPhase extends IngamePhase {
     @Override
     protected void tick(int timer) {
         announceNextPhase(timer);
-        announceFinalHeal(timer);
+        handleFinalHeal(timer);
         if (timer > maxPhaseTime) {
             this.startNextPhase();
         }
     }
 
-    private void announceFinalHeal(int timer) {
+    private void handleFinalHeal(int timer) {
         int timeLeft = finalHeal - timer;
-        if (timeLeft % (2 * 60) == 0) {
+        if (timeLeft == 0) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.setHealth(20));
+            Bukkit.broadcastMessage(ChatColor.RED + "Final Heal");
+        } else if (timeLeft % (2 * 60) == 0) {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.finaHealIn", ImmutableMap.of("time", timeString));
         }
@@ -59,7 +63,9 @@ public class FarmPhase extends IngamePhase {
 
     private void announceNextPhase(int timer) {
         int timeLeft = maxPhaseTime - timer;
-        if (timeLeft % (5 * 60) == 0) {
+        if (timeLeft == 0) {
+            Bukkit.broadcastMessage(ChatColor.AQUA.toString() + ChatColor.BOLD + "PvP has been enabled");
+        } else if (timeLeft % (5 * 60) == 0) {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.pvpIn", ImmutableMap.of("time", timeString));
         }
