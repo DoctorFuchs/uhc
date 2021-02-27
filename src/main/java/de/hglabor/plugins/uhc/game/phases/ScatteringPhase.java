@@ -4,16 +4,19 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
+import de.hglabor.utils.noriskutils.PermissionUtils;
+import jdk.jfr.Percentage;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -21,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -58,6 +62,7 @@ public class ScatteringPhase extends GamePhase {
             player.teleportAsync(uhcPlayer.getSpawnLocation()).thenAccept(bool -> {
                 if (bool != null) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 1000));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 15, 1000));
                     uhcPlayer.setStatus(UserStatus.INGAME);
                 }
                 teleportOrNextPhase();
@@ -109,6 +114,14 @@ public class ScatteringPhase extends GamePhase {
     @Override
     protected GamePhase getNextPhase() {
         return new FarmPhase();
+    }
+
+    @EventHandler
+    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (player.hasPermission("group.mod") || player.isOp()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
