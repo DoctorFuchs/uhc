@@ -34,6 +34,10 @@ public final class GameManager {
         }, 0, 20L);
     }
 
+    public void enableScenarios() {
+        scenarios.stream().filter(Scenario::isEnabled).forEach(scenario -> Bukkit.getPluginManager().registerEvents(scenario, Uhc.getPlugin()));
+    }
+
     public void addScenario(Scenario scenario) {
         scenarios.add(scenario);
     }
@@ -46,9 +50,13 @@ public final class GameManager {
         return border;
     }
 
-    public GamePhase getPhase() { return phase; }
+    public GamePhase getPhase() {
+        return phase;
+    }
 
-    public void setPhase(GamePhase phase) { this.phase = phase; }
+    public void setPhase(GamePhase phase) {
+        this.phase = phase;
+    }
 
     public void resetTimer() {
         timer.set(0);

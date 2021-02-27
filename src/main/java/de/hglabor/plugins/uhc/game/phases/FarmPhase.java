@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import com.google.common.collect.ImmutableMap;
 import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
@@ -28,6 +29,7 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     protected void init() {
+        GameManager.INSTANCE.enableScenarios();
         Bukkit.getPluginManager().registerEvents(CombatLogger.INSTANCE, Uhc.getPlugin());
         Bukkit.broadcastMessage(ChatColor.GRAY + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
