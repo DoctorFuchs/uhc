@@ -27,7 +27,7 @@ public final class GameManager {
     }
 
     public void run() {
-      //  phase.init();
+        phase.init();
         Bukkit.getScheduler().runTaskTimer(Uhc.getPlugin(), () -> {
             final int CURRENT_TIME = timer.getAndIncrement();
             phase.tick(CURRENT_TIME);

@@ -34,6 +34,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Netherless.INSTANCE);
         gameManager.addScenario(RodKnockback.INSTANCE);
         gameManager.addScenario(Teams.INSTANCE);
+        gameManager.addScenario(AppleDrop.INSTANCE);
         gameManager.addScenario(Timebomb.INSTANCE);
         GameManager.INSTANCE.run();
 
@@ -49,8 +50,6 @@ public final class Uhc extends JavaPlugin {
     public void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
-        CutClean.INSTANCE.setEnabled(true);
-        pluginManager.registerEvents(CutClean.INSTANCE, this);
     }
 
     @Override
