@@ -1,6 +1,6 @@
 package de.hglabor.plugins.uhc.util;
 
-import de.hglabor.plugins.uhc.game.border.Corner;
+import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.utils.noriskutils.ChanceUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.HeightMap;

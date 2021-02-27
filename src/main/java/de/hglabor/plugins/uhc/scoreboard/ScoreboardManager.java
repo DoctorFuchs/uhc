@@ -21,7 +21,7 @@ public final class ScoreboardManager implements Listener {
     }
 
     public static void setBasicScoreboardLayout(ScoreboardPlayer player) {
-        String placeHolder = ChatColor.STRIKETHROUGH + "             ";
+        String placeHolder = ChatColor.STRIKETHROUGH + "                             ";
         ScoreboardFactory.addEntry(player, "placeHolder2", placeHolder, 5);
         ScoreboardFactory.addEntry(player, "time", "Start: " + TimeConverter.stringify(180), 4);
         ScoreboardFactory.addEntry(player, "players", "Players: " + Bukkit.getOnlinePlayers().size(), 3);

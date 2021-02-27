@@ -10,6 +10,7 @@ import de.hglabor.utils.noriskutils.ChatUtils;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -53,6 +54,10 @@ public abstract class IngamePhase extends GamePhase {
         if (uhcPlayer.getStatus().equals(UserStatus.INGAME)) {
             uhcPlayer.setStatus(UserStatus.OFFLINE);
         }
+    }
+
+    @EventHandler
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {
     }
 
     @EventHandler

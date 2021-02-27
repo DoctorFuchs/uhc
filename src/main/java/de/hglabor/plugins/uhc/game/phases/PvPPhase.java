@@ -3,7 +3,7 @@ package de.hglabor.plugins.uhc.game.phases;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.border.Border;
+import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.entity.Player;

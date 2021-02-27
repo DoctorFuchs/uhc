@@ -53,7 +53,7 @@ public class FarmPhase extends IngamePhase {
         int timeLeft = finalHeal - timer;
         if (timeLeft == 0) {
             Bukkit.getOnlinePlayers().forEach(player -> player.setHealth(20));
-            Bukkit.broadcastMessage(ChatColor.RED + "Final Heal");
+            Bukkit.broadcastMessage(ChatColor.AQUA.toString() + ChatColor.BOLD + "Final Heal");
         } else if (timeLeft % (2 * 60) == 0) {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.finaHealIn", ImmutableMap.of("time", timeString));

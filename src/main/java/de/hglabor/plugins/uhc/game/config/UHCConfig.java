@@ -1,6 +1,8 @@
 package de.hglabor.plugins.uhc.game.config;
 
 import de.hglabor.plugins.uhc.Uhc;
+import org.bukkit.GameRule;
+import org.bukkit.World;
 
 public class UHCConfig {
 
@@ -24,6 +26,32 @@ public class UHCConfig {
         plugin.saveConfig();
     }
 
+
+    public static void setPvPWorldSettings(World world) {
+        world.setTime(6000);
+        world.setStorm(false);
+        world.setThundering(false);
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        world.setGameRule(GameRule.NATURAL_REGENERATION, false);
+    }
+
+    public static void setLobbySettings(World world) {
+        world.setTime(6000);
+        world.setStorm(false);
+        world.setThundering(false);
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        world.setGameRule(GameRule.MOB_GRIEFING, false);
+        world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        world.setGameRule(GameRule.DISABLE_RAIDS, true);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+        world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+        world.setGameRule(GameRule.DO_ENTITY_DROPS, false);
+        world.setGameRule(GameRule.DO_TILE_DROPS, false);
+    }
 
     public static int getInteger(String key) {
         return Uhc.getPlugin().getConfig().getInt(key);

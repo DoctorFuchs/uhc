@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.game.phases;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.noriskutils.TimeConverter;
@@ -31,6 +32,7 @@ public class LobbyPhase extends GamePhase {
     @Override
     protected void init() {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        UHCConfig.setLobbySettings(lobby);
     }
 
     @Override

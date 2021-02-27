@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.border;
+package de.hglabor.plugins.uhc.game.mechanics.border;
 
 import com.google.common.collect.ImmutableMap;
 import com.sk89q.worldedit.EditSession;
@@ -29,6 +29,12 @@ public class Border {
         this.BORDER_SHRINK_SIZE = UHCConfig.getInteger(CKeys.BORDER_SHRINK_SIZE);
         this.borderSize = UHCConfig.getInteger(CKeys.BORDER_START_SIZE);
         this.overWorld = Bukkit.getWorld("world");
+        init();
+    }
+
+    private void init() {
+        overWorld.getWorldBorder().setDamageAmount(0);
+        overWorld.getWorldBorder().setDamageBuffer(0);
         this.recalculateBorder();
     }
 
@@ -66,22 +72,19 @@ public class Border {
                 Outside outside = Outside.get(location, borderSize);
                 int coord = borderSize - 5;
                 int x, z;
-                if (outside != Outside.INSIDE) {
-                    uhcPlayer.setTeleporting(true);
-                }
                 switch (outside) {
                     case X:
                         x = corner.xConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ())).thenAccept(bool -> uhcPlayer.setTeleporting(false));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()));
                         break;
                     case Z:
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z)).thenAccept(bool -> uhcPlayer.setTeleporting(false));
+                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
                         break;
                     case BOTH:
                         x = corner.xConverter.convert(coord);
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z)).thenAccept(bool -> uhcPlayer.setTeleporting(false));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
                         break;
                 }
             });

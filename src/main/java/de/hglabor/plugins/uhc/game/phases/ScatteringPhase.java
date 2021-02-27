@@ -4,7 +4,8 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.border.Corner;
+import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
@@ -40,6 +41,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     protected void init() {
+        UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
         Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
