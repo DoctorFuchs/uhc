@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Timebomb extends Scenario {
     public final static Timebomb INSTANCE = new Timebomb();
@@ -32,21 +33,23 @@ public class Timebomb extends Scenario {
             Player player = event.getEntity();
             ArrayList<ItemStack> items = new ArrayList<>(event.getDrops());
             event.getDrops().clear();
-            TBThread thread = new TBThread(player.getLocation(), items);
+            TBThread thread = new TBThread(player.getLocation(), items, 45);
             thread.placeAndFillChest();
+            thread.runTaskTimer(Uhc.getPlugin(), 20, 20);
         }
     }
 
-    public class TBThread {
-        private Location location;
-        private ArrayList<ItemStack> itemDrops;
-        private int timeLeft = 45;
+    public static class TBThread extends BukkitRunnable {
+        private final Location location;
+        private final List<ItemStack> itemDrops;
+        private int timeLeft;
         private ArmorStand armorStand;
         private Block firstBlock;
         private Block secondBlock;
 
-        public TBThread(Location location, ArrayList<ItemStack> itemDrops) {
+        public TBThread(Location location, ArrayList<ItemStack> itemDrops, int timeLeft) {
             this.location = location;
+            this.timeLeft = timeLeft;
             this.itemDrops = itemDrops;
         }
 
@@ -68,24 +71,19 @@ public class Timebomb extends Scenario {
             armorStand.setVisible(false);
             armorStand.setCustomNameVisible(true);
             armorStand.setGravity(false);
-            startRunnable();
         }
 
-        private void startRunnable() {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (timeLeft > 0) {
-                        armorStand.setCustomName(String.format(ChatColor.AQUA + "%d" + ChatColor.BLUE + "s", timeLeft));
-                        timeLeft--;
-                    } else {
-                        firstBlock.getWorld().createExplosion(firstBlock.getLocation(), 10.0f, false, true);
-                        firstBlock.setType(Material.AIR);
-                        secondBlock.setType(Material.AIR);
-                        armorStand.remove();
-                    }
-                }
-            }.runTaskTimer(Uhc.getPlugin(), 20, 45);
+        @Override
+        public void run() {
+            if (timeLeft > 0) {
+                armorStand.setCustomName(String.format(ChatColor.AQUA + "%d" + ChatColor.BLUE + "s", timeLeft));
+                timeLeft--;
+            } else {
+                firstBlock.getWorld().createExplosion(firstBlock.getLocation(), 10.0f, false, true);
+                firstBlock.setType(Material.AIR);
+                secondBlock.setType(Material.AIR);
+                armorStand.remove();
+            }
         }
     }
 }

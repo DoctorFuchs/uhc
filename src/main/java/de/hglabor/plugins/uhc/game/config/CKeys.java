@@ -6,7 +6,6 @@ public interface CKeys {
     String LOBBY = PHASE + "." + "lobby";
     String LOBBY_START_TIME = LOBBY + "." + "startTime";
 
-
     String SCATTER = PHASE + "." + "scatter";
     String SCATTER_TELEPORT_DELAY = SCATTER + "." + "teleportDelayjk";
 
@@ -26,5 +25,7 @@ public interface CKeys {
      * Shrink size til border hits 500 mark
      */
     String BORDER_SHRINK_SIZE = "border" + "." + "shrinkSize";
+
+    String SCENARIOS = "scenarios";
 
 }

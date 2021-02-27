@@ -4,8 +4,6 @@ import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.command.StartCommand;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.scenarios.*;
-import de.hglabor.plugins.uhc.game.scenarios.Netherless;
-import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
 import dev.jorel.commandapi.CommandAPI;

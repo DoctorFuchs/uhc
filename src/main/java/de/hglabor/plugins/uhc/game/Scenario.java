@@ -1,5 +1,7 @@
 package de.hglabor.plugins.uhc.game;
 
+import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.game.config.CKeys;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,6 +13,14 @@ public abstract class Scenario implements Listener {
     public Scenario(String name, ItemStack displayItem) {
         this.name = name;
         this.displayItem = displayItem;
+        saveToConfig();
+    }
+
+    private void saveToConfig() {
+        Uhc plugin = Uhc.getPlugin();
+        plugin.getConfig().addDefault(CKeys.SCENARIOS + "." + getName() + "." + "enabled", false);
+        plugin.getConfig().options().copyDefaults(true);
+        plugin.saveConfig();
     }
 
     public boolean isEnabled() {
