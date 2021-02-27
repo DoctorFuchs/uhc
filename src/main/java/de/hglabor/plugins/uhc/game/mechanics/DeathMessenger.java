@@ -19,4 +19,9 @@ public class DeathMessenger {
         String deadText = ChatColor.RED + dead.getName() + " " + "[" + dead.getKills() + "]";
         Bukkit.broadcastMessage(deadText + ChatColor.GRAY + " died");
     }
+
+    public void broadcast(UHCPlayer dead, String deathMessage) {
+        String deadText = ChatColor.RED + dead.getName() + " " + "[" + dead.getKills() + "]" + ChatColor.GRAY;
+        Bukkit.broadcastMessage(deathMessage.replaceAll(dead.getName(), deadText));
+    }
 }

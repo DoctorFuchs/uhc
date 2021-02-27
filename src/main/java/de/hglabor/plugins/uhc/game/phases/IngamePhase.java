@@ -66,7 +66,11 @@ public abstract class IngamePhase extends GamePhase {
             killer.getKills().incrementAndGet();
             deathMessenger.broadcast(killer, uhcPlayer);
         } else {
-            deathMessenger.broadcast(uhcPlayer);
+            if (event.getDeathMessage() != null) {
+                deathMessenger.broadcast(uhcPlayer, event.getDeathMessage());
+            } else {
+                deathMessenger.broadcast(uhcPlayer);
+            }
         }
 
         if (player.hasPermission("hglabor.spectator")) {

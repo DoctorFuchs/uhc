@@ -1,17 +1,22 @@
 package de.hglabor.plugins.uhc.game.phases;
 
 import com.google.common.collect.ImmutableMap;
+import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class FarmPhase extends IngamePhase {
     private final int finalHeal;
@@ -23,8 +28,14 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     protected void init() {
+        Bukkit.getPluginManager().registerEvents(CombatLogger.INSTANCE, Uhc.getPlugin());
+        Bukkit.broadcastMessage(ChatColor.GRAY + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle("UHC | Farmphase", "gl hf", 20, 20, 20);
+            player.setHealth(20);
+            player.setSaturation(20);
+            player.setFireTicks(0);
+            player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 20));
             PotionUtils.removePotionEffects(player);
         }
     }
