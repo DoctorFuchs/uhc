@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.game.scenarios;
 
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.Scenario;
+import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.utils.noriskutils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Timebomb extends Scenario {
     public final static Timebomb INSTANCE = new Timebomb();
@@ -32,20 +34,22 @@ public class Timebomb extends Scenario {
         if (isEnabled()) {
             Player player = event.getEntity();
             ArrayList<ItemStack> items = new ArrayList<>(event.getDrops());
+            ItemStack item = new ItemStack(Material.GOLDEN_APPLE);
+            items.add(item);
             event.getDrops().clear();
-            TBThread thread = new TBThread(player.getLocation(), items, 45);
+            TBThread thread = new TBThread(player.getLocation().getBlock().getLocation(), items, 45);
             thread.placeAndFillChest();
             thread.runTaskTimer(Uhc.getPlugin(), 20, 20);
         }
     }
 
     public static class TBThread extends BukkitRunnable {
-        private final Location location;
+        private Location location;
         private final List<ItemStack> itemDrops;
         private int timeLeft;
         private ArmorStand armorStand;
-        private Block firstBlock;
-        private Block secondBlock;
+        private Block leftBlock;
+        private Block rightBlock;
 
         public TBThread(Location location, ArrayList<ItemStack> itemDrops, int timeLeft) {
             this.location = location;
@@ -54,21 +58,41 @@ public class Timebomb extends Scenario {
         }
 
         private void placeAndFillChest() {
-            firstBlock = location.getBlock();
-            secondBlock = location.add(1, 0, 0).getBlock();
-            firstBlock.setType(Material.CHEST);
-            secondBlock.setType(Material.CHEST);
-            Chest firstChest = (Chest) firstBlock.getState();
+            leftBlock = location.getBlock();
+            rightBlock = location.add(-1, 0, 0).getBlock();
 
-            Inventory chestInventory = firstChest.getInventory();
-            itemDrops.forEach(chestInventory::addItem);
+            leftBlock.setType(Material.CHEST);
+            rightBlock.setType(Material.CHEST);
+            Chest firstChest = (Chest) leftBlock.getState();
+            Chest secondChest = (Chest) rightBlock.getState();
 
+            org.bukkit.block.data.type.Chest chestDataLeft = (org.bukkit.block.data.type.Chest) leftBlock.getBlockData();
+            org.bukkit.block.data.type.Chest chestDataRight = (org.bukkit.block.data.type.Chest) rightBlock.getBlockData();
+            chestDataLeft.setType(org.bukkit.block.data.type.Chest.Type.RIGHT);
+            chestDataRight.setType(org.bukkit.block.data.type.Chest.Type.LEFT);
+            leftBlock.setBlockData(chestDataLeft, false);
+            rightBlock.setBlockData(chestDataRight, false);
+
+            Inventory firstChestInventory = firstChest.getInventory();
+            Inventory secondChestInventory = secondChest.getInventory();
+
+            AtomicInteger count = new AtomicInteger();
+            itemDrops.forEach( item -> {
+                if (count.get() < 27)
+                    firstChestInventory.addItem(item);
+                else
+                    secondChestInventory.addItem(item);
+                count.getAndIncrement();
+            });
+
+            this.location = leftBlock.getLocation().add(0, -1.3, 0.7);
             summonArmorStand(location);
         }
 
         private void summonArmorStand(Location location) {
             armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
             armorStand.setVisible(false);
+            armorStand.setCustomName(String.format(ChatColor.AQUA + "%ds", timeLeft));
             armorStand.setCustomNameVisible(true);
             armorStand.setGravity(false);
         }
@@ -76,13 +100,14 @@ public class Timebomb extends Scenario {
         @Override
         public void run() {
             if (timeLeft > 0) {
-                armorStand.setCustomName(String.format(ChatColor.AQUA + "%d" + ChatColor.BLUE + "s", timeLeft));
+                armorStand.setCustomName(String.format(ChatColor.AQUA + "%ds", timeLeft));
                 timeLeft--;
             } else {
-                firstBlock.getWorld().createExplosion(firstBlock.getLocation(), 10.0f, false, true);
-                firstBlock.setType(Material.AIR);
-                secondBlock.setType(Material.AIR);
+                leftBlock.setType(Material.AIR);
+                rightBlock.setType(Material.AIR);
                 armorStand.remove();
+                leftBlock.getWorld().createExplosion(rightBlock.getLocation(), 10.0f, false, true);
+                cancel();
             }
         }
     }
