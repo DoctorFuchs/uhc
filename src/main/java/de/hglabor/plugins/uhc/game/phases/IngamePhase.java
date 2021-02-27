@@ -2,7 +2,6 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.DeathMessenger;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;

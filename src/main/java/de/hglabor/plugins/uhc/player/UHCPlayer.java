@@ -3,7 +3,6 @@ package de.hglabor.plugins.uhc.player;
 import de.hglabor.utils.noriskutils.scoreboard.ScoreboardPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 
 import java.util.Optional;
 import java.util.UUID;

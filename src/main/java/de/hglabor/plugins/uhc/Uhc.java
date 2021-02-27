@@ -7,7 +7,6 @@ import de.hglabor.plugins.uhc.game.scenarios.Netherless;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
-import de.hglabor.utils.noriskutils.scoreboard.ScoreboardFactory;
 import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
