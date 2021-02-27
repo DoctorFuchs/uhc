@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.game.phases;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
@@ -25,7 +26,7 @@ public class LobbyPhase extends GamePhase {
     private final World lobby;
 
     public LobbyPhase() {
-        super(60, PhaseType.LOBBY);
+        super(UHCConfig.getInteger(CKeys.LOBBY_START_TIME), PhaseType.LOBBY);
         this.lobby = Bukkit.getWorld("lobby");
     }
 
@@ -67,6 +68,7 @@ public class LobbyPhase extends GamePhase {
 
     @EventHandler
     private void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         player.teleportAsync(lobby.getSpawnLocation());
@@ -74,6 +76,7 @@ public class LobbyPhase extends GamePhase {
 
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
         playerList.remove(event.getPlayer().getUniqueId());
     }
 

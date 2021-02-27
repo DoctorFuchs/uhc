@@ -40,6 +40,7 @@ public abstract class IngamePhase extends GamePhase {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         if (uhcPlayer.getStatus().equals(UserStatus.OFFLINE)) {
@@ -49,6 +50,7 @@ public abstract class IngamePhase extends GamePhase {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         if (uhcPlayer.getStatus().equals(UserStatus.INGAME)) {
@@ -84,6 +86,7 @@ public abstract class IngamePhase extends GamePhase {
             uhcPlayer.setStatus(UserStatus.ELIMINATED);
             player.kickPlayer("Death");
         }
+        event.setDeathMessage(null);
     }
 
     @Override

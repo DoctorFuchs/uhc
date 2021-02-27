@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.game.mechanics;
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -22,6 +23,7 @@ public class OfflineTimer {
         BukkitTask bukkitTask = new BukkitRunnable() {
             @Override
             public void run() {
+                Bukkit.broadcastMessage(uhcPlayer.getName() + " " + uhcPlayer.getOfflineTime().get());
                 if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {
                     eliminate(uhcPlayer);
                     cancel();

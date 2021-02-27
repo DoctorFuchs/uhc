@@ -1,18 +1,19 @@
 package de.hglabor.plugins.uhc.game.phases;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
-import de.hglabor.utils.noriskutils.PermissionUtils;
-import jdk.jfr.Percentage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -24,10 +25,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -40,7 +38,7 @@ public class ScatteringPhase extends GamePhase {
 
     protected ScatteringPhase() {
         super(0, PhaseType.SCATTERING);
-        this.loadBar = Bukkit.createBossBar("Scattering", BarColor.GREEN, BarStyle.SOLID);
+        this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ScatteringPhase extends GamePhase {
             player.teleportAsync(uhcPlayer.getSpawnLocation()).thenAccept(bool -> {
                 if (bool != null) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 1000));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 15, 1000));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 15, 10));
                     uhcPlayer.setStatus(UserStatus.INGAME);
                 }
                 teleportOrNextPhase();
@@ -81,7 +79,7 @@ public class ScatteringPhase extends GamePhase {
 
     private void teleportOrNextPhase() {
         if (playerList.getScatteringPlayers().size() > 0) {
-            teleportPlayersRecursively(getRandomScatteringPlayer());
+            Bukkit.getScheduler().runTaskLater(Uhc.getPlugin(), () -> teleportPlayersRecursively(getRandomScatteringPlayer()), UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY));
         } else {
             Bukkit.getScheduler().runTask(plugin, this::startNextPhase);
         }
@@ -114,6 +112,19 @@ public class ScatteringPhase extends GamePhase {
     @Override
     protected GamePhase getNextPhase() {
         return new FarmPhase();
+    }
+
+    @EventHandler
+    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        event.setKickMessage(ChatColor.RED + "You can't log in during scattering");
+        event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_FULL);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+        Player player = event.getPlayer();
+         playerList.remove(player.getUniqueId());
     }
 
     @EventHandler

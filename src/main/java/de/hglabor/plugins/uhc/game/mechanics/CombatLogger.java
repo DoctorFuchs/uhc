@@ -28,10 +28,12 @@ public final class CombatLogger implements Listener {
     public final static CombatLogger INSTANCE = new CombatLogger();
     private final Map<UUID, Inventory> inventories;
     private final OfflineTimer offlineTimer;
+    private final DeathMessenger deathMessenger;
 
     private CombatLogger() {
         this.inventories = new HashMap<>();
         this.offlineTimer = new OfflineTimer();
+        this.deathMessenger = new DeathMessenger();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -51,7 +53,7 @@ public final class CombatLogger implements Listener {
         if (uhcPlayer.getStatus().equals(UserStatus.INGAME)) {
             if (uhcPlayer.getCombatLogMob() == null) return;
             offlineTimer.stopTimer(uhcPlayer);
-            Optional.ofNullable(Bukkit.getEntity(uhcPlayer.getUuid())).ifPresent(entity -> {
+            Optional.ofNullable(Bukkit.getEntity(uhcPlayer.getCombatLogMob())).ifPresent(entity -> {
                 inventories.remove(entity.getUniqueId());
                 entity.removeMetadata(player.getUniqueId().toString(), Uhc.getPlugin());
                 entity.remove();
@@ -65,11 +67,14 @@ public final class CombatLogger implements Listener {
             Zombie zombie = (Zombie) event.getEntity();
             for (UUID uuid : inventories.keySet()) {
                 if (zombie.hasMetadata(uuid.toString())) {
-                    modifyZombieDrop(event, zombie);
+                    modifyZombieDrop(event, uuid);
                     PlayerList.INSTANCE.getPlayer(uuid).ifPresent(uhcPlayer -> {
                         uhcPlayer.setStatus(UserStatus.ELIMINATED);
                         uhcPlayer.setCombatLogMob(null);
                         uhcPlayer.getBukkitPlayer().ifPresent(player -> player.kickPlayer("Your combatlogger died"));
+                        if (zombie.getKiller() != null) {
+                            deathMessenger.broadcast(PlayerList.INSTANCE.getPlayer(zombie.getKiller()), uhcPlayer);
+                        }
                     });
                     return;
                 }
@@ -77,25 +82,26 @@ public final class CombatLogger implements Listener {
         }
     }
 
-    private void modifyZombieDrop(EntityDeathEvent event, Zombie zombie) {
+    private void modifyZombieDrop(EntityDeathEvent event, UUID uuid) {
         for (ItemStack drop : event.getDrops()) {
             drop.setAmount(0);
             drop.setType(Material.AIR);
         }
-        Inventory inventory = inventories.get(zombie.getUniqueId());
-        inventories.remove(zombie.getUniqueId());
+        Inventory inventory = inventories.get(uuid);
+        inventories.remove(uuid);
         event.getDrops().addAll(Arrays.asList(inventory.getContents()));
+        Bukkit.broadcastMessage("dropping items");
     }
 
     private void spawnCombatLogZombie(Player player, UHCPlayer uhcPlayer) {
         Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
         uhcPlayer.setCombatLogMob(zombie.getUniqueId());
-        inventories.put(zombie.getUniqueId(), player.getInventory());
+        inventories.put(player.getUniqueId(), player.getInventory());
         zombie.setMetadata(player.getUniqueId().toString(), new FixedMetadataValue(Uhc.getPlugin(), ""));
-        zombie.setAI(false);
         zombie.setCustomName(player.getName());
         zombie.setCustomNameVisible(true);
         zombie.setCanPickupItems(false);
+        zombie.setAI(false);
         zombie.setRemoveWhenFarAway(false);
         zombie.setShouldBurnInDay(false);
         setItem(zombie, player.getInventory().getHelmet(), EnumItemSlot.HEAD);

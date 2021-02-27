@@ -6,6 +6,7 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.PlayerList;
@@ -13,6 +14,7 @@ import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 
 public class Border {
     private final int SHRINK_INTERVAL;
@@ -55,10 +57,10 @@ public class Border {
             borderSize = nextBorderSize;
             recalculateBorder();
             if (cutInHalf && borderSize <= 100) {
-                createBorder(Bukkit.getWorld("world"), borderSize, 60, 10);
+               // createBorder(Bukkit.getWorld("world"), borderSize, 60, 10);
             } else {
-                overWorld.getWorldBorder().setSize(borderSize * 2);
             }
+            overWorld.getWorldBorder().setSize(borderSize * 2);
             teleportToCorner();
         }
     }
@@ -75,20 +77,28 @@ public class Border {
                 switch (outside) {
                     case X:
                         x = corner.xConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, location.getBlockZ(), HeightMap.MOTION_BLOCKING_NO_LEAVES), location.getZ()).clone().add(0,1,0));
                         break;
                     case Z:
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
+                        player.teleportAsync(new Location(world, location.getX(), world.getHighestBlockYAt(location.getBlockX(), z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0,1,0));
                         break;
                     case BOTH:
                         x = corner.xConverter.convert(coord);
                         z = corner.zConverter.convert(coord);
-                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z));
+                        player.teleportAsync(new Location(world, x, world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING_NO_LEAVES), z).clone().add(0,1,0));
                         break;
                 }
             });
         }
+    }
+
+    private void borderPacket() {
+        Bukkit.getScheduler().runTaskTimer(Uhc.getPlugin(), () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                isNearBorder(player, 10);
+            }
+        }, 0, 5);
     }
 
     private void recalculateBorder() {
@@ -125,5 +135,57 @@ public class Border {
 
     public int getBorderSize() {
         return borderSize;
+    }
+
+    private boolean isNearBorder(Player player, int puffer) {
+        Location location = player.getLocation();
+        if (borderSize - Math.abs(location.getBlockX()) < puffer) {
+            Location toChange = new Location(overWorld, borderSize * convert(location.getX()), location.getBlockY(), location.getZ());
+            int size = 2;
+            for (int y = -size; y <= size; y++) {
+                for (int z = -size; z <= size; z++) {
+                    Location newState = toChange.clone().add(0, y, z);
+                    sendBlockChange(player, newState);
+                    Bukkit.getScheduler().runTaskLater(Uhc.getPlugin(), () -> removeBlockChange(player, newState, puffer), 2);
+                }
+            }
+        }
+
+        if (borderSize - Math.abs(location.getBlockZ()) < puffer) {
+            Location toChange = new Location(overWorld, location.getX(), location.getBlockY(), borderSize * convert(location.getZ()));
+            int size = 2;
+            for (int y = -size; y <= size; y++) {
+                for (int x = -size; x <= size; x++) {
+                    Location newState = toChange.clone().add(x, y, 0);
+                    sendBlockChange(player, newState);
+                    Bukkit.getScheduler().runTaskLater(Uhc.getPlugin(), () -> removeBlockChange(player, newState, puffer), 2);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void sendBlockChange(Player player, Location location) {
+        if (location.getBlock().isSolid()) return;
+        player.sendBlockChange(location, Material.RED_STAINED_GLASS.createBlockData());
+    }
+
+    private void removeBlockChange(Player player, Location location, int puffer) {
+        double v = location.distanceSquared(player.getLocation());
+        if (v > puffer * puffer) {
+            player.sendBlockChange(location, location.getBlock().getBlockData());
+        } else {
+            Bukkit.getScheduler().runTaskLater(Uhc.getPlugin(), () -> removeBlockChange(player, location, puffer), 2);
+        }
+    }
+
+
+    private int convert(double coord) {
+        if (coord < 0) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

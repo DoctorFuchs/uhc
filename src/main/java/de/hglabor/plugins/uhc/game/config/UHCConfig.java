@@ -9,6 +9,12 @@ public class UHCConfig {
     public static void load() {
         Uhc plugin = Uhc.getPlugin();
 
+        //LOBBY
+        plugin.getConfig().addDefault(CKeys.LOBBY_START_TIME, 60 * 15);
+
+        //SCATTER
+        plugin.getConfig().addDefault(CKeys.SCATTER_TELEPORT_DELAY, 10);
+
         //FARM PHASE
         plugin.getConfig().addDefault(CKeys.FARM_FARM_TIME, 60 * 20);
         plugin.getConfig().addDefault(CKeys.FARM_FINAL_HEAL, 60 * 10);
