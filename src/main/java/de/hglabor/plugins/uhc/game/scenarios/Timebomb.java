@@ -84,7 +84,7 @@ public class Timebomb extends Scenario {
                 count.getAndIncrement();
             });
 
-            this.location = leftBlock.getLocation().add(0, -1.3, 0.7);
+            this.location = leftBlock.getLocation().add(0, -1.3, 0.5);
             summonArmorStand(location);
         }
 
