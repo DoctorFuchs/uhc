@@ -18,6 +18,8 @@ public class UHCConfig {
         plugin.getConfig().addDefault(CKeys.BORDER_FIRST_SHRINK, 45 * 60);
         plugin.getConfig().addDefault(CKeys.BORDER_SHRINK_INTERVAL, 60 * 5);
 
+        plugin.getConfig().addDefault(CKeys.RELOG_TIME, 120);
+
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveConfig();
     }

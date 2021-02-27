@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.player;
 import de.hglabor.utils.noriskutils.scoreboard.ScoreboardPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,16 @@ public interface UHCPlayer extends ScoreboardPlayer {
     UserStatus getStatus();
 
     String getName();
+
+    UUID getCombatLogMob();
+
+    void setCombatLogMob(UUID zombie);
+
+    AtomicInteger getOfflineTime();
+
+    boolean isInCombat();
+
+    void setInCombat(boolean inCombat);
 
     AtomicInteger getKills();
 

@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class PvPPhase extends GamePhase {
-
+public class PvPPhase extends IngamePhase {
     protected PvPPhase() {
         super(0, PhaseType.PVP);
     }

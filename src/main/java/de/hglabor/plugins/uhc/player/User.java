@@ -1,9 +1,12 @@
 package de.hglabor.plugins.uhc.player;
 
+import de.hglabor.plugins.uhc.game.config.CKeys;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -16,15 +19,18 @@ public class User implements UHCPlayer {
     private final UUID uuid;
     private final String name;
     private final AtomicInteger kills;
-    protected Scoreboard scoreboard;
-    protected Objective objective;
+    private final AtomicInteger offlineTime;
+    private boolean isTeleporting, inCombat;
+    private UUID combatLogMob;
     private Location spawn;
     private UserStatus status;
-    private boolean isTeleporting;
+    private Objective objective;
+    private Scoreboard scoreboard;
 
     public User(UUID uuid, String name) {
         this.status = UserStatus.LOBBY;
         this.kills = new AtomicInteger();
+        this.offlineTime = new AtomicInteger(UHCConfig.getInteger(CKeys.RELOG_TIME));
         this.uuid = uuid;
         this.name = name;
     }
@@ -40,10 +46,14 @@ public class User implements UHCPlayer {
     }
 
     @Override
-    public boolean isTeleporting() { return isTeleporting; }
+    public boolean isTeleporting() {
+        return isTeleporting;
+    }
 
     @Override
-    public void setTeleporting(boolean value) { isTeleporting = value; }
+    public void setTeleporting(boolean value) {
+        isTeleporting = value;
+    }
 
     @Override
     public UserStatus getStatus() {
@@ -58,6 +68,31 @@ public class User implements UHCPlayer {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public UUID getCombatLogMob() {
+        return combatLogMob;
+    }
+
+    @Override
+    public void setCombatLogMob(UUID zombie) {
+        this.combatLogMob = zombie;
+    }
+
+    @Override
+    public AtomicInteger getOfflineTime() {
+        return offlineTime;
+    }
+
+    @Override
+    public boolean isInCombat() {
+        return inCombat;
+    }
+
+    @Override
+    public void setInCombat(boolean inCombat) {
+        this.inCombat = inCombat;
     }
 
     @Override

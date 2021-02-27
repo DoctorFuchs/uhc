@@ -7,7 +7,8 @@ public interface CKeys {
     String FARM_FINAL_HEAL = FARM + "." + "finalHeal";
     String FARM_FARM_TIME = FARM + "." + "farmTime";
 
-    String PVP = PHASE + "." + "pvp";
+    String MECHANICS = "MECHANICS";
+    String RELOG_TIME = MECHANICS + "." + "relogTime";
 
     String BORDER = "border";
     String BORDER_FIRST_SHRINK = BORDER + "." + "firstShrink";
