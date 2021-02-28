@@ -24,7 +24,7 @@ public class GlobalChat implements Listener {
     public void enable(boolean enable) {
         isEnabled = enable;
         if (enable) {
-            Bukkit.broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD + "CHAT HAS BEEN ENABLED");
+            Bukkit.broadcastMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + "CHAT HAS BEEN ENABLED");
         } else {
             Bukkit.broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD + "CHAT HAS BEEN DISABLED");
         }
