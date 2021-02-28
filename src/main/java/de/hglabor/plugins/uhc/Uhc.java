@@ -1,9 +1,9 @@
 package de.hglabor.plugins.uhc;
 
-import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.command.GlobalChatCommand;
 import de.hglabor.plugins.uhc.command.StartCommand;
 import de.hglabor.plugins.uhc.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.scenarios.*;
@@ -19,8 +19,6 @@ import java.nio.file.Paths;
 
 public final class Uhc extends JavaPlugin {
     private static Uhc instance;
-
-    //TODO herzen unter namen
 
     public static Uhc getPlugin() {
         return instance;
