@@ -1,7 +1,7 @@
 package de.hglabor.plugins.uhc.player;
 
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

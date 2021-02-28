@@ -1,8 +1,8 @@
 package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
@@ -43,6 +43,10 @@ public final class GameManager {
                 Bukkit.getPluginManager().registerEvents(scenario, Uhc.getPlugin());
             }
         }
+    }
+
+    public Set<Scenario> getScenarios() {
+        return scenarios;
     }
 
     public void addScenario(Scenario scenario) {

@@ -5,8 +5,8 @@ import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.utils.noriskutils.ChatUtils;
@@ -66,6 +66,10 @@ public class FarmPhase extends IngamePhase {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.finaHealIn", ImmutableMap.of("time", timeString));
         }
+    }
+
+    public int getFinalHeal() {
+        return finalHeal;
     }
 
     private void announceNextPhase(int timer) {

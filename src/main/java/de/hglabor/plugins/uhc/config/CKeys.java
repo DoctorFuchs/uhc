@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.config;
+package de.hglabor.plugins.uhc.config;
 
 public interface CKeys {
     String PHASE = "phase";
