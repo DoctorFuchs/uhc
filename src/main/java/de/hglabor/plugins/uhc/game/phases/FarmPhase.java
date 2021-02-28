@@ -36,7 +36,8 @@ public class FarmPhase extends IngamePhase {
         Bukkit.broadcastMessage(ChatColor.GRAY + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
             HeartDisplay.INSTANCE.enableHealthBar(player);
-            player.sendTitle("UHC | Farmphase", "gl hf", 20, 20, 20);
+            player.sendTitle(ChatColor.AQUA + "UHC" + ChatColor.WHITE + " | " + ChatColor.GREEN + "Farmphase",
+                    ChatColor.GOLD + "gl hf", 20, 20, 20);
             player.setHealth(20);
             player.setSaturation(20);
             player.setFireTicks(0);

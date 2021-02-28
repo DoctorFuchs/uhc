@@ -7,6 +7,7 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
@@ -47,6 +48,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     protected void init() {
+        GlobalChat.INSTANCE.enable(false);
         UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
@@ -125,12 +127,6 @@ public class ScatteringPhase extends GamePhase {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
         playerList.remove(player.getUniqueId());
-    }
-
-    @EventHandler
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        event.setCancelled(!player.hasPermission("group.mod") && !player.isOp());
     }
 
     @EventHandler
