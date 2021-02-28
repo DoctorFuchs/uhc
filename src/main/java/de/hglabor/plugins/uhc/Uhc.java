@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.command.StartCommand;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.scenarios.Netherless;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
@@ -30,6 +31,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Netherless.INSTANCE);
         gameManager.addScenario(Teams.INSTANCE);
         gameManager.run();
+        GoldenHead.register();
 
         CommandAPI.onEnable(this);
         registerCommand();
@@ -43,6 +45,7 @@ public final class Uhc extends JavaPlugin {
     public void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
+        pluginManager.registerEvents(new GoldenHead(), this);
     }
 
     @Override
