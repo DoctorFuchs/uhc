@@ -34,7 +34,7 @@ public class Timebomb extends Scenario {
         if (isEnabled()) {
             Player player = event.getEntity();
             ArrayList<ItemStack> items = new ArrayList<>(event.getDrops());
-            items.add(GoldenHead.itemStack);
+            items.add(GoldenHead.INSTANCE.getHeadItem());
             event.getDrops().clear();
             TBThread thread = new TBThread(player.getLocation().getBlock().getLocation(), items, 45);
             thread.placeAndFillChest();
@@ -43,8 +43,8 @@ public class Timebomb extends Scenario {
     }
 
     public static class TBThread extends BukkitRunnable {
-        private Location location;
         private final List<ItemStack> itemDrops;
+        private Location location;
         private int timeLeft;
         private ArmorStand armorStand;
         private Block leftBlock;
@@ -76,7 +76,7 @@ public class Timebomb extends Scenario {
             Inventory secondChestInventory = secondChest.getInventory();
 
             AtomicInteger count = new AtomicInteger();
-            itemDrops.forEach( item -> {
+            itemDrops.forEach(item -> {
                 if (count.get() < 27)
                     firstChestInventory.addItem(item);
                 else

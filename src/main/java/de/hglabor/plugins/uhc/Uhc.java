@@ -29,7 +29,6 @@ public final class Uhc extends JavaPlugin {
     public void onEnable() {
         Bukkit.createWorld(new WorldCreator("lobby"));
 
-
         GameManager gameManager = GameManager.INSTANCE;
         gameManager.addScenario(BloodDiamondsNetherite.INSTANCE);
         gameManager.addScenario(CrossBowless.INSTANCE);
@@ -39,15 +38,16 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Netherless.INSTANCE);
         gameManager.addScenario(RodKnockback.INSTANCE);
         gameManager.addScenario(Teams.INSTANCE);
-        GoldenHead.register();
         gameManager.addScenario(AppleDrop.INSTANCE);
         gameManager.addScenario(Timebomb.INSTANCE);
-        GameManager.INSTANCE.run();
+        gameManager.run();
+
+        GoldenHead.INSTANCE.register();
 
         CommandAPI.onEnable(this);
         registerCommand();
         registerListener();
-     //   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
+        //   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
     }
 
     public void registerCommand() {
@@ -57,7 +57,7 @@ public final class Uhc extends JavaPlugin {
     public void registerListener() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
-        pluginManager.registerEvents(new GoldenHead(), this);
+        pluginManager.registerEvents(GoldenHead.INSTANCE, this);
         pluginManager.registerEvents(new HeartDisplay(), this);
     }
 
