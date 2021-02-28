@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.ConfigInventory;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
@@ -27,6 +28,7 @@ public final class GameManager {
     }
 
     public void run() {
+        ConfigInventory.INSTANCE.addScenariosToCompound();
         phase.init();
         Bukkit.getScheduler().runTaskTimer(Uhc.getPlugin(), () -> {
             final int CURRENT_TIME = timer.getAndIncrement();
