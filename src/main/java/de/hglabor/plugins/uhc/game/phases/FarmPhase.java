@@ -9,12 +9,14 @@ import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.scenarios.NoCooldown;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -42,6 +44,10 @@ public class FarmPhase extends IngamePhase {
             player.setFireTicks(0);
             player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 20));
             PotionUtils.removePotionEffects(player);
+
+            if (NoCooldown.INSTANCE.isEnabled()) {
+                player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(100);
+            }
         }
     }
 
