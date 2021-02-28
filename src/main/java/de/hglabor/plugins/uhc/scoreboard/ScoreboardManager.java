@@ -51,8 +51,6 @@ public final class ScoreboardManager implements Listener {
         UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
         if (uhcPlayer.getScoreboard() == null) {
             ScoreboardFactory.create(uhcPlayer);
-            Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "❤", RenderType.HEARTS);
-            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
             ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
         }
         player.setScoreboard(uhcPlayer.getScoreboard());

@@ -8,6 +8,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.config.CKeys;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
+import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
@@ -34,6 +35,7 @@ public class FarmPhase extends IngamePhase {
         Bukkit.getPluginManager().registerEvents(CombatLogger.INSTANCE, Uhc.getPlugin());
         Bukkit.broadcastMessage(ChatColor.GRAY + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
+            HeartDisplay.INSTANCE.enableHealthBar(player);
             player.sendTitle("UHC | Farmphase", "gl hf", 20, 20, 20);
             player.setHealth(20);
             player.setSaturation(20);
@@ -77,7 +79,7 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     public String getTimeString(int timer) {
-    return ChatColor.AQUA + "Duration: " + ChatColor.GREEN + TimeConverter.stringify(timer);
+        return ChatColor.AQUA + "Duration: " + ChatColor.GREEN + TimeConverter.stringify(timer);
     }
 
     @Override

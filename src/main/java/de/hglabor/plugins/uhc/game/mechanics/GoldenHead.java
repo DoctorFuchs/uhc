@@ -22,6 +22,7 @@ public class GoldenHead implements Listener {
         this.itemStack = new ItemBuilder(Material.GOLDEN_APPLE)
                 .setName(ChatColor.GOLD + "Golden Head")
                 .hideItemFlags()
+                .hideEnchants()
                 .setEnchantment(Enchantment.LURE, 1)
                 .build();
     }

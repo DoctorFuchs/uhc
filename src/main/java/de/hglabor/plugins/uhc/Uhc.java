@@ -58,7 +58,7 @@ public final class Uhc extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
-        pluginManager.registerEvents(new HeartDisplay(), this);
+        pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
     }
 
     @Override
