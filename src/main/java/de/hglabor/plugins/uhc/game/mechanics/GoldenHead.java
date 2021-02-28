@@ -28,9 +28,9 @@ public class GoldenHead implements Listener {
     }
 
     @EventHandler
-    public void onConsume(PlayerItemConsumeEvent event) {
+    private void onConsume(PlayerItemConsumeEvent event) {
         if (event.getItem().isSimilar(itemStack)) {
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 9, 1));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 10, 1));
         }
     }
 
