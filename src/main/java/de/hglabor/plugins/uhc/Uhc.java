@@ -50,6 +50,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Horseless.INSTANCE);
         gameManager.addScenario(EnchantedDeath.INSTANCE);
         gameManager.addScenario(DoubleOres.INSTANCE);
+        gameManager.addScenario(DoubleHealth.INSTANCE);
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
