@@ -5,8 +5,8 @@ import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.scenarios.NoCooldown;
@@ -38,7 +38,8 @@ public class FarmPhase extends IngamePhase {
         Bukkit.broadcastMessage(ChatColor.GRAY + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
             HeartDisplay.INSTANCE.enableHealthBar(player);
-            player.sendTitle("UHC | Farmphase", "gl hf", 20, 20, 20);
+            player.sendTitle(ChatColor.AQUA + "UHC" + ChatColor.WHITE + " | " + ChatColor.GREEN + "Farmphase",
+                    ChatColor.GOLD + "gl hf", 20, 20, 20);
             player.setHealth(20);
             player.setSaturation(20);
             player.setFireTicks(0);
@@ -71,6 +72,10 @@ public class FarmPhase extends IngamePhase {
             String timeString = TimeConverter.stringify(timeLeft);
             ChatUtils.broadcastMessage("farm.finaHealIn", ImmutableMap.of("time", timeString));
         }
+    }
+
+    public int getFinalHeal() {
+        return finalHeal;
     }
 
     private void announceNextPhase(int timer) {

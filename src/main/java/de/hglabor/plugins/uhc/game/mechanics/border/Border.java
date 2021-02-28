@@ -6,8 +6,8 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import de.hglabor.plugins.uhc.Uhc;
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
@@ -137,6 +137,10 @@ public class Border {
 
     public int getBorderSize() {
         return borderSize;
+    }
+
+    public int getNextBorderSize() {
+        return nextBorderSize;
     }
 
     private boolean isNearBorder(Player player, int puffer) {

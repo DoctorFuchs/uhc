@@ -1,7 +1,7 @@
 package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
-import de.hglabor.plugins.uhc.game.config.CKeys;
+import de.hglabor.plugins.uhc.config.CKeys;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 

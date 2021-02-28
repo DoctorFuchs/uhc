@@ -2,8 +2,8 @@ package de.hglabor.plugins.uhc.game.scenarios;
 
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.Scenario;
-import de.hglabor.plugins.uhc.game.config.CKeys;
-import de.hglabor.plugins.uhc.game.config.UHCConfig;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.utils.noriskutils.ChanceUtils;
 import de.hglabor.utils.noriskutils.ItemBuilder;
 import org.bukkit.Material;
