@@ -16,11 +16,13 @@ public class Timber extends Scenario {
     }
 
     @EventHandler
-    public void onBlockBreakWithKitItem(BlockBreakEvent event) {
-        Block block = event.getBlock();
-        String blockTypeName = block.getType().name().toLowerCase();
-        if (blockTypeName.contains("wood") || blockTypeName.contains("log")) {
-            breakSurroundingWood(block);
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (isEnabled()) {
+            Block block = event.getBlock();
+            String blockTypeName = block.getType().name().toLowerCase();
+            if (blockTypeName.contains("wood") || blockTypeName.contains("log")) {
+                breakSurroundingWood(block);
+            }
         }
     }
 
