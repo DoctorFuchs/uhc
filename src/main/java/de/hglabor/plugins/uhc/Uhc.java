@@ -40,6 +40,10 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Teams.INSTANCE);
         gameManager.addScenario(AppleDrop.INSTANCE);
         gameManager.addScenario(Timebomb.INSTANCE);
+        gameManager.addScenario(Soup.INSTANCE);
+        gameManager.addScenario(NoCooldown.INSTANCE);
+        gameManager.addScenario(NoClean.INSTANCE);
+        gameManager.addScenario(Timber.INSTANCE);
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
