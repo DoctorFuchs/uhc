@@ -1,8 +1,8 @@
 package de.hglabor.plugins.uhc;
 
 import de.hglabor.plugins.uhc.game.GameManager;
-import de.hglabor.plugins.uhc.game.command.GlobalChatCommand;
-import de.hglabor.plugins.uhc.game.command.StartCommand;
+import de.hglabor.plugins.uhc.command.GlobalChatCommand;
+import de.hglabor.plugins.uhc.command.StartCommand;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;

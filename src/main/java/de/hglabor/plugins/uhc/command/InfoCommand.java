@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.command;
+package de.hglabor.plugins.uhc.command;
 
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.Scenario;
