@@ -14,6 +14,7 @@ import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -34,11 +35,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScatteringPhase extends GamePhase {
     private final BossBar loadBar;
+    private final AtomicInteger counter;
     private int maxPlayers;
+
 
     protected ScatteringPhase() {
         super(0, PhaseType.SCATTERING);
         this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
+        this.counter = new AtomicInteger(1);
     }
 
     @Override
@@ -46,21 +50,22 @@ public class ScatteringPhase extends GamePhase {
         UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
+        loadBar.setProgress(0);
         Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
-            setSpawnLocations();
             teleportPlayersRecursively(getRandomScatteringPlayer());
         }
     }
 
     private void teleportPlayersRecursively(UHCPlayer uhcPlayer) {
+        uhcPlayer.setSpawnLocation(getSpawnLocation());
         uhcPlayer.getBukkitPlayer().ifPresentOrElse(player -> {
             player.teleportAsync(uhcPlayer.getSpawnLocation()).thenAccept(bool -> {
                 if (bool != null) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 1000));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 15, 10));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000000, 1000));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
                     uhcPlayer.setStatus(UserStatus.INGAME);
                 }
                 teleportOrNextPhase();
@@ -89,13 +94,9 @@ public class ScatteringPhase extends GamePhase {
         return playerList.getScatteringPlayers().stream().findAny().get();
     }
 
-    private void setSpawnLocations() {
-        AtomicInteger counter = new AtomicInteger(1);
-        for (UHCPlayer player : playerList.getScatteringPlayers()) {
-            if (counter.get() > 4) counter.set(1);
-            Corner corner = Corner.getCorner(counter.getAndIncrement());
-            player.setSpawnLocation(SpawnUtils.getCornerSpawn(corner, GameManager.INSTANCE.getBorder().getBorderSize()));
-        }
+    private Location getSpawnLocation() {
+        if (counter.get() > 4) counter.set(1);
+        return SpawnUtils.getCornerSpawn(Corner.getCorner(counter.getAndIncrement()), GameManager.INSTANCE.getBorder().getBorderSize());
     }
 
     @Override
@@ -106,7 +107,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return "Loading: " + playerList.getAlivePlayers().size() / maxPlayers;
+        return ChatColor.AQUA + "Loading: " + ChatColor.GREEN + +playerList.getAlivePlayers().size() / maxPlayers;
     }
 
     @Override
@@ -115,24 +116,21 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        event.setKickMessage(ChatColor.RED + "You can't log in during scattering");
-        event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_FULL);
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().kickPlayer(ChatColor.RED + "You can't log in during scattering");
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
-         playerList.remove(player.getUniqueId());
+        playerList.remove(player.getUniqueId());
     }
 
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("group.mod") || player.isOp()) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(!player.hasPermission("group.mod") && !player.isOp());
     }
 
     @EventHandler

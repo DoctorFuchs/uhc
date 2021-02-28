@@ -117,11 +117,11 @@ public class Border {
         int timeLeft = nextShrink - time;
         if (timeLeft <= 300) {
             if (timeLeft % 60 == 0 || timeLeft <= 5 || timeLeft == 10) {
-               /* ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
+              /*   ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
                         "size", String.valueOf(nextBorderSize),
-                        "time", TimeConverter.stringify(timeLeft))); */
+                        "time", TimeConverter.stringify(timeLeft)));*/
                 Bukkit.broadcastMessage(ChatColor.AQUA + "Border will be shrinked to " +
-                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize + ChatColor.RESET + ChatColor.AQUA +
+                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize +ChatColor.RESET + ChatColor.AQUA +
                         " in " + ChatColor.GREEN + TimeConverter.stringify(timeLeft));
             }
         }
@@ -132,7 +132,7 @@ public class Border {
     }
 
     public String getBorderString(int time) {
-        return "Border: " + borderSize;
+        return ChatColor.AQUA + "Border: " + ChatColor.GREEN + borderSize;
     }
 
     public int getBorderSize() {

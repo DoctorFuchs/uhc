@@ -1,6 +1,8 @@
 package de.hglabor.plugins.uhc.game;
 
 import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.game.config.CKeys;
+import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.phases.LobbyPhase;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
@@ -34,6 +36,15 @@ public final class GameManager {
         }, 0, 20L);
     }
 
+    public void enableScenarios() {
+        for (Scenario scenario : scenarios) {
+            scenario.setEnabled(UHCConfig.getBoolean(CKeys.SCENARIOS + "." + scenario.getName() + "." + "enabled"));
+            if (scenario.isEnabled()) {
+                Bukkit.getPluginManager().registerEvents(scenario, Uhc.getPlugin());
+            }
+        }
+    }
+
     public void addScenario(Scenario scenario) {
         scenarios.add(scenario);
     }
@@ -46,9 +57,13 @@ public final class GameManager {
         return border;
     }
 
-    public GamePhase getPhase() { return phase; }
+    public GamePhase getPhase() {
+        return phase;
+    }
 
-    public void setPhase(GamePhase phase) { this.phase = phase; }
+    public void setPhase(GamePhase phase) {
+        this.phase = phase;
+    }
 
     public void resetTimer() {
         timer.set(0);

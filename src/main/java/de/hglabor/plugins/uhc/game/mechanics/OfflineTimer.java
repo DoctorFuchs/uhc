@@ -23,7 +23,6 @@ public class OfflineTimer {
         BukkitTask bukkitTask = new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.broadcastMessage(uhcPlayer.getName() + " " + uhcPlayer.getOfflineTime().get());
                 if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {
                     eliminate(uhcPlayer);
                     cancel();

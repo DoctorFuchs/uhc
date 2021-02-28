@@ -41,6 +41,7 @@ public class UHCConfig {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         world.setGameRule(GameRule.NATURAL_REGENERATION, false);
+        world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
     }
 
     public static void setLobbySettings(World world) {

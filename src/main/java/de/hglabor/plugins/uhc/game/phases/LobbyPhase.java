@@ -63,7 +63,7 @@ public class LobbyPhase extends GamePhase {
     @Override
     public String getTimeString(int timer) {
         int timeLeft = maxPhaseTime - timer;
-        return ChatColor.AQUA + "Start: " + ChatColor.GREEN + TimeConverter.stringify(timeLeft);
+        return ChatColor.AQUA + "Start: " + ChatColor.GREEN  + TimeConverter.stringify(timeLeft);
     }
 
     @Override

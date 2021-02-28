@@ -31,10 +31,18 @@ public final class Uhc extends JavaPlugin {
 
 
         GameManager gameManager = GameManager.INSTANCE;
+        gameManager.addScenario(BloodDiamondsNetherite.INSTANCE);
+        gameManager.addScenario(CrossBowless.INSTANCE);
+        gameManager.addScenario(CutClean.INSTANCE);
+        gameManager.addScenario(Fireless.INSTANCE);
+        gameManager.addScenario(HasteyBoys.INSTANCE);
         gameManager.addScenario(Netherless.INSTANCE);
+        gameManager.addScenario(RodKnockback.INSTANCE);
         gameManager.addScenario(Teams.INSTANCE);
-        gameManager.run();
         GoldenHead.register();
+        gameManager.addScenario(AppleDrop.INSTANCE);
+        gameManager.addScenario(Timebomb.INSTANCE);
+        GameManager.INSTANCE.run();
 
         CommandAPI.onEnable(this);
         registerCommand();
