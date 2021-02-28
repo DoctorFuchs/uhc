@@ -9,6 +9,7 @@ import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,6 +39,10 @@ public class LobbyPhase extends GamePhase {
 
     @Override
     protected void tick(int timer) {
+        if (Bukkit.getOnlinePlayers().isEmpty()) {
+            GameManager.INSTANCE.resetTimer();
+            return;
+        }
         int timeLeft = maxPhaseTime - timer;
         if (timeLeft == 0) {
             this.startNextPhase();
@@ -58,7 +63,7 @@ public class LobbyPhase extends GamePhase {
     @Override
     public String getTimeString(int timer) {
         int timeLeft = maxPhaseTime - timer;
-        return "Start: " + TimeConverter.stringify(timeLeft);
+        return ChatColor.AQUA + "Start: " + ChatColor.GREEN + TimeConverter.stringify(timeLeft);
     }
 
     @Override
