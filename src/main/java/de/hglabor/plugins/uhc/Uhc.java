@@ -4,8 +4,8 @@ import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.command.StartCommand;
 import de.hglabor.plugins.uhc.game.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
-import de.hglabor.plugins.uhc.game.scenarios.Netherless;
-import de.hglabor.plugins.uhc.game.scenarios.Teams;
+import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.scenarios.*;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
 import dev.jorel.commandapi.CommandAPI;
@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 public final class Uhc extends JavaPlugin {
     private static Uhc instance;
 
+    //TODO herzen unter namen
+
     public static Uhc getPlugin() {
         return instance;
     }
@@ -26,6 +28,7 @@ public final class Uhc extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.createWorld(new WorldCreator("lobby"));
+
 
         GameManager gameManager = GameManager.INSTANCE;
         gameManager.addScenario(Netherless.INSTANCE);
@@ -36,6 +39,7 @@ public final class Uhc extends JavaPlugin {
         CommandAPI.onEnable(this);
         registerCommand();
         registerListener();
+     //   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
     }
 
     public void registerCommand() {
@@ -46,6 +50,7 @@ public final class Uhc extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
         pluginManager.registerEvents(new GoldenHead(), this);
+        pluginManager.registerEvents(new HeartDisplay(), this);
     }
 
     @Override

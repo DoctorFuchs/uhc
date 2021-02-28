@@ -38,6 +38,12 @@ public abstract class IngamePhase extends GamePhase {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
+        if (!uhcPlayer.getStatus().equals(UserStatus.OFFLINE)) {
+            uhcPlayer.setStatus(UserStatus.SPECTATOR);
+            player.setGameMode(GameMode.SPECTATOR);
+            return;
+        }
+
         if (uhcPlayer.getStatus().equals(UserStatus.OFFLINE)) {
             uhcPlayer.setStatus(UserStatus.INGAME);
         } else if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {

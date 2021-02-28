@@ -13,6 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.RenderType;
 
 public final class ScoreboardManager implements Listener {
     public final static ScoreboardManager INSTANCE = new ScoreboardManager();
@@ -48,6 +51,8 @@ public final class ScoreboardManager implements Listener {
         UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
         if (uhcPlayer.getScoreboard() == null) {
             ScoreboardFactory.create(uhcPlayer);
+            Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "❤", RenderType.HEARTS);
+            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
             ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
         }
         player.setScoreboard(uhcPlayer.getScoreboard());

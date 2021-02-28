@@ -13,6 +13,7 @@ public abstract class Scenario implements Listener {
         this.displayItem = displayItem;
     }
 
+
     public boolean isEnabled() {
         return isEnabled;
     }

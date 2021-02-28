@@ -27,4 +27,5 @@ public interface CKeys {
      */
     String BORDER_SHRINK_SIZE = "border" + "." + "shrinkSize";
 
+    String SCENARIOS = "scenarios";
 }
