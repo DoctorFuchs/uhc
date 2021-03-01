@@ -52,6 +52,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(DoubleOres.INSTANCE);
         gameManager.addScenario(DoubleHealth.INSTANCE);
         gameManager.addScenario(FlowerPower.INSTANCE);
+        gameManager.addScenario(Shieldless.INSTANCE);
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
