@@ -77,7 +77,7 @@ public class LobbyPhase extends GamePhase {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
-        player.teleportAsync(lobby.getSpawnLocation());
+        player.teleport(lobby.getSpawnLocation());
     }
 
     @EventHandler

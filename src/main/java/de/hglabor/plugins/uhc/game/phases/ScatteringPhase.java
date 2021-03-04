@@ -30,17 +30,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class ScatteringPhase extends GamePhase {
-    private final BossBar loadBar;
     private final World world;
     private int maxPlayers;
 
     protected ScatteringPhase() {
         super(0, PhaseType.SCATTERING);
         this.world = Bukkit.getWorld("world");
-        this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
     }
 
     @Override
@@ -50,8 +46,6 @@ public class ScatteringPhase extends GamePhase {
         UHCConfig.setPvPWorldSettings(world);
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
-        loadBar.setProgress(0);
-        Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
@@ -60,17 +54,9 @@ public class ScatteringPhase extends GamePhase {
         }
     }
 
-
-    @Override
-    public void startNextPhase() {
-        loadBar.removeAll();
-        super.startNextPhase();
-    }
-    
     @Override
     protected void tick(int timer) {
         GameManager.INSTANCE.resetTimer();
-        ScatteringPhase.this.loadBar.setProgress((double) playerList.getAlivePlayers().size() / maxPlayers);
     }
 
     @Override

@@ -6,7 +6,12 @@ import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerScattering extends BukkitRunnable {
+    private final BossBar loadBar;
     private final List<UHCPlayer> toTeleport;
     private final int size;
     private final AtomicInteger playerCounter;
@@ -25,11 +31,19 @@ public class PlayerScattering extends BukkitRunnable {
         this.size = toTeleport.size();
         this.playerCounter = new AtomicInteger();
         this.cornerCounter = new AtomicInteger(1);
+        this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
+        init();
+    }
+
+    private void init() {
+        loadBar.setProgress(0);
+        Bukkit.getOnlinePlayers().forEach(loadBar::addPlayer);
     }
 
     @Override
     public void run() {
         if (playerCounter.get() == size) {
+            loadBar.removeAll();
             GameManager.INSTANCE.getPhase().startNextPhase();
             cancel();
             return;
@@ -43,6 +57,8 @@ public class PlayerScattering extends BukkitRunnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
             toTeleport.setStatus(UserStatus.INGAME);
         }, () -> PlayerList.INSTANCE.remove(toTeleport.getUuid()));
+
+        loadBar.setProgress((double) playerCounter.get() / size);
     }
 
     private Location getSpawnLocation() {
