@@ -9,14 +9,13 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
-import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
+import de.hglabor.plugins.uhc.game.mechanics.PlayerScattering;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
-import de.hglabor.plugins.uhc.util.SpawnUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -30,28 +29,25 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScatteringPhase extends GamePhase {
     private final BossBar loadBar;
-    private final AtomicInteger counter;
+    private final World world;
     private int maxPlayers;
-
 
     protected ScatteringPhase() {
         super(0, PhaseType.SCATTERING);
+        this.world = Bukkit.getWorld("world");
         this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
-        this.counter = new AtomicInteger(1);
     }
 
     @Override
     protected void init() {
         GlobalChat.INSTANCE.enable(false);
-        MobRemover.INSTANCE.killMobs();
-        UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
+        MobRemover.INSTANCE.enable(world);
+        UHCConfig.setPvPWorldSettings(world);
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
         loadBar.setProgress(0);
@@ -59,50 +55,18 @@ public class ScatteringPhase extends GamePhase {
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
-            teleportPlayersRecursively(getRandomScatteringPlayer());
+            PlayerScattering playerScattering = new PlayerScattering(playerList.getScatteringPlayers());
+            playerScattering.runTaskTimer(Uhc.getPlugin(),0,UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY));
         }
     }
 
-    private void teleportPlayersRecursively(UHCPlayer uhcPlayer) {
-        uhcPlayer.setSpawnLocation(getSpawnLocation());
-        uhcPlayer.getBukkitPlayer().ifPresentOrElse(player -> {
-            player.teleportAsync(uhcPlayer.getSpawnLocation()).thenAccept(bool -> {
-                if (bool != null) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000000, 1000));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
-                    uhcPlayer.setStatus(UserStatus.INGAME);
-                }
-                teleportOrNextPhase();
-            });
-        }, () -> {
-            playerList.remove(uhcPlayer.getUuid());
-            teleportOrNextPhase();
-        });
-    }
 
     @Override
     public void startNextPhase() {
         loadBar.removeAll();
         super.startNextPhase();
     }
-
-    private void teleportOrNextPhase() {
-        if (playerList.getScatteringPlayers().size() > 0) {
-            Bukkit.getScheduler().runTaskLater(Uhc.getPlugin(), () -> teleportPlayersRecursively(getRandomScatteringPlayer()), UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY));
-        } else {
-            Bukkit.getScheduler().runTask(plugin, this::startNextPhase);
-        }
-    }
-
-    private UHCPlayer getRandomScatteringPlayer() {
-        return playerList.getScatteringPlayers().stream().findAny().get();
-    }
-
-    private Location getSpawnLocation() {
-        if (counter.get() > 4) counter.set(1);
-        return SpawnUtils.getCornerSpawn(Corner.getCorner(counter.getAndIncrement()), GameManager.INSTANCE.getBorder().getBorderSize());
-    }
-
+    
     @Override
     protected void tick(int timer) {
         GameManager.INSTANCE.resetTimer();
@@ -120,19 +84,19 @@ public class ScatteringPhase extends GamePhase {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    private void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().kickPlayer(ChatColor.RED + "You can't log in during scattering");
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    private void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
         Player player = event.getPlayer();
         playerList.remove(player.getUniqueId());
     }
 
     @EventHandler
-    public void onPlayerJump(PlayerJumpEvent event) {
+    private void onPlayerJump(PlayerJumpEvent event) {
         UHCPlayer player = playerList.getPlayer(event.getPlayer());
         if (player.isAlive()) {
             event.setCancelled(true);

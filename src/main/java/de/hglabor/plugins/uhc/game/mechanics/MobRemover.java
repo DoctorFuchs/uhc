@@ -1,12 +1,13 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import de.hglabor.utils.noriskutils.ChanceUtils;
-import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.Set;
 
@@ -24,8 +25,14 @@ public class MobRemover implements Listener {
                 EntityType.WANDERING_TRADER, EntityType.LLAMA, EntityType.SALMON);
     }
 
-    public void killMobs() {
-        Bukkit.getWorld("world").getEntities().stream().filter(entity -> disabledTypes.contains(entity.getType())).forEach(Entity::remove);
+    public void enable(World world) {
+        for (Entity entity : world.getEntities()) {
+            if (disabledTypes.contains(entity.getType())) {
+                entity.remove();
+            } else if (entity instanceof Animals) {
+                ((Animals) entity).setAI(false);
+            }
+        }
     }
 
     @EventHandler
@@ -33,11 +40,13 @@ public class MobRemover implements Listener {
         if (disabledTypes.contains(event.getType())) {
             event.setShouldAbortSpawn(true);
             event.setCancelled(true);
-        } else if (event.getType().equals(EntityType.SHEEP)) {
-            if (ChanceUtils.roll(65)) {
-                event.setShouldAbortSpawn(true);
-                event.setCancelled(true);
-            }
+        }
+    }
+
+    @EventHandler
+    private void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getEntity() instanceof Animals) {
+            event.getEntity().setAI(false);
         }
     }
 }

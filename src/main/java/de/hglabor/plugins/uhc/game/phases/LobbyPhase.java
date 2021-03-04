@@ -35,7 +35,6 @@ public class LobbyPhase extends GamePhase {
     @Override
     protected void init() {
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        MobRemover.INSTANCE.killMobs();
         UHCConfig.setLobbySettings(lobby);
     }
 
