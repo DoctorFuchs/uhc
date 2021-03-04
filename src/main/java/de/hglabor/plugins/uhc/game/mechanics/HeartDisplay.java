@@ -47,13 +47,13 @@ public class HeartDisplay implements Listener {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (shooter instanceof Player) {
             LivingEntity hitEntity = (LivingEntity) event.getHitEntity();
-            ((Player) shooter).sendMessage(ChatColor.AQUA + hitEntity.getName() + " is now at " + ChatColor.GREEN + hitEntity.getHealth() + ChatColor.RED + " ❤");
+            ((Player) shooter).sendMessage(ChatColor.AQUA + hitEntity.getName() + " is now at " + ChatColor.GREEN + hitEntity.getHealth() + ChatColor.RED + " \u2764");
         }
     }
 
     public void enableHealthBar(Player player) {
         UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
-        Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "❤", RenderType.HEARTS);
+        Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "\u2764", RenderType.HEARTS);
         objective.getScore(uhcPlayer.getName()).setScore((int) player.getHealth());
         objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
     }

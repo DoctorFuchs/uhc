@@ -2,12 +2,13 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.config.CKeys;
-import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
+import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
 import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
@@ -49,6 +50,7 @@ public class ScatteringPhase extends GamePhase {
     @Override
     protected void init() {
         GlobalChat.INSTANCE.enable(false);
+        MobRemover.INSTANCE.killMobs();
         UHCConfig.setPvPWorldSettings(Bukkit.getWorld("world"));
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
@@ -109,7 +111,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return ChatColor.AQUA + "Loading: " + ChatColor.GREEN + +playerList.getAlivePlayers().size() / maxPlayers;
+        return ChatColor.AQUA + "Loading: " + ChatColor.GREEN + playerList.getAlivePlayers().size() + "/" + maxPlayers;
     }
 
     @Override

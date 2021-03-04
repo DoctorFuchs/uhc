@@ -20,7 +20,7 @@ public class InfoCommand {
                     player.sendMessage(strike + ChatColor.RESET + ChatColor.AQUA + "UHC" + strike);
                     switch (GameManager.INSTANCE.getPhaseType()) {
                         case LOBBY:
-                            player.sendMessage(ChatColor.AQUA + "Start: " + ChatColor.GREEN + GameManager.INSTANCE.getPhase().getTimeString(GameManager.INSTANCE.getTimer()));
+                            player.sendMessage(GameManager.INSTANCE.getPhase().getTimeString(GameManager.INSTANCE.getTimer()));
                             sendScenarios(player);
                             break;
                         case FARM:
@@ -52,7 +52,6 @@ public class InfoCommand {
 
     private void sendScenarios(Player player) {
         Set<Scenario> scenarios = GameManager.INSTANCE.getScenarios();
-        player.sendMessage(ChatColor.AQUA + "Scenarios: " + ChatColor.GREEN + GameManager.INSTANCE.getPhase().getTimeString(GameManager.INSTANCE.getTimer()));
         scenarios.stream().filter(Scenario::isEnabled).map(scenario -> ChatColor.GREEN + " - " + ChatColor.BLUE + scenario.getName()).forEach(player::sendMessage);
     }
 }

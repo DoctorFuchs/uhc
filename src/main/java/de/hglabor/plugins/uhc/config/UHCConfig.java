@@ -3,6 +3,10 @@ package de.hglabor.plugins.uhc.config;
 import de.hglabor.plugins.uhc.Uhc;
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class UHCConfig {
 
@@ -27,6 +31,7 @@ public class UHCConfig {
         plugin.getConfig().addDefault(CKeys.BORDER_SHRINK_INTERVAL, 60 * 5);
 
         plugin.getConfig().addDefault(CKeys.RELOG_TIME, 120);
+        plugin.getConfig().addDefault(CKeys.PREGEN_WORLD, true);
 
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveConfig();

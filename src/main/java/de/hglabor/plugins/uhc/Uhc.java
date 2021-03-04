@@ -1,11 +1,15 @@
 package de.hglabor.plugins.uhc;
 
 import de.hglabor.plugins.uhc.command.GlobalChatCommand;
+import de.hglabor.plugins.uhc.command.InfoCommand;
 import de.hglabor.plugins.uhc.command.StartCommand;
+import de.hglabor.plugins.uhc.command.WorldTp;
+import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
 import de.hglabor.plugins.uhc.game.scenarios.*;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
@@ -43,6 +47,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(NoCooldown.INSTANCE);
         gameManager.addScenario(NoClean.INSTANCE);
         gameManager.addScenario(Timber.INSTANCE);
+        gameManager.enableScenarios();
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
@@ -50,12 +55,16 @@ public final class Uhc extends JavaPlugin {
         CommandAPI.onEnable(this);
         registerCommand();
         registerListener();
-        //   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
+        if (UHCConfig.getBoolean(CKeys.PREGEN_WORLD)) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
+        }
     }
 
     public void registerCommand() {
         new StartCommand();
         new GlobalChatCommand();
+        new InfoCommand();
+        new WorldTp();
     }
 
     public void registerListener() {
@@ -63,6 +72,7 @@ public final class Uhc extends JavaPlugin {
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
         pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
+        pluginManager.registerEvents(MobRemover.INSTANCE, this);
     }
 
     @Override

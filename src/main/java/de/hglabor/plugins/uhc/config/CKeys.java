@@ -15,6 +15,7 @@ public interface CKeys {
 
     String MECHANICS = "MECHANICS";
     String RELOG_TIME = MECHANICS + "." + "relogTime";
+    String PREGEN_WORLD = MECHANICS + "." + "preGenWorld";
 
     String BORDER = "border";
     String BORDER_FIRST_SHRINK = BORDER + "." + "firstShrink";
