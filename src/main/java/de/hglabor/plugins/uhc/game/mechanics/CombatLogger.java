@@ -76,6 +76,7 @@ public final class CombatLogger implements Listener {
                             deathMessenger.broadcast(PlayerList.INSTANCE.getPlayer(zombie.getKiller()), uhcPlayer);
                         }
                     });
+                    zombie.remove();
                     return;
                 }
             }
