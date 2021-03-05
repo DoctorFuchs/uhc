@@ -47,6 +47,16 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(NoCooldown.INSTANCE);
         gameManager.addScenario(NoClean.INSTANCE);
         gameManager.addScenario(Timber.INSTANCE);
+        gameManager.addScenario(Diamondless.INSTANCE);
+        gameManager.addScenario(Enchantmentless.INSTANCE);
+        gameManager.addScenario(ColdWeapons.INSTANCE);
+        gameManager.addScenario(HealingKill.INSTANCE);
+        gameManager.addScenario(Horseless.INSTANCE);
+        gameManager.addScenario(EnchantedDeath.INSTANCE);
+        gameManager.addScenario(DoubleOres.INSTANCE);
+        gameManager.addScenario(DoubleHealth.INSTANCE);
+        gameManager.addScenario(FlowerPower.INSTANCE);
+        gameManager.addScenario(Shieldless.INSTANCE);
         gameManager.enableScenarios();
         gameManager.run();
 

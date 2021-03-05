@@ -9,6 +9,7 @@ import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.scenarios.DoubleHealth;
 import de.hglabor.plugins.uhc.game.scenarios.NoCooldown;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
@@ -48,6 +49,11 @@ public class FarmPhase extends IngamePhase {
 
             if (NoCooldown.INSTANCE.isEnabled()) {
                 player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(100);
+            }
+
+            if (DoubleHealth.INSTANCE.isEnabled()) {
+                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40);
+                player.setHealth(40);
             }
         }
     }
