@@ -10,6 +10,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.PlayerScattering;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
+import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import org.bukkit.Bukkit;
@@ -88,6 +89,19 @@ public class ScatteringPhase extends GamePhase {
     private void onPlayerJump(PlayerJumpEvent event) {
         UHCPlayer player = playerList.getPlayer(event.getPlayer());
         if (player.isAlive()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
+        //Player was just moving mouse
+        if (event.getTo().distanceSquared(event.getFrom()) == 0) {
+            return;
+        }
+        if (uhcPlayer.getStatus().equals(UserStatus.INGAME)) {
             event.setCancelled(true);
         }
     }
