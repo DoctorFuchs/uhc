@@ -48,7 +48,7 @@ public class AppleDrop extends Scenario {
         if (!isEnabled()) {
             return;
         }
-        if (block.getType().name().toUpperCase().endsWith("_LEAVES")) {
+        if (!block.getType().name().toUpperCase().endsWith("_LEAVES")) {
             return;
         }
         if (ChanceUtils.roll(dropRate)) {
