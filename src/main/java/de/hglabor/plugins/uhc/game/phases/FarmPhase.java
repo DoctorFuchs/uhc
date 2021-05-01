@@ -2,13 +2,15 @@ package de.hglabor.plugins.uhc.game.phases;
 
 import com.google.common.collect.ImmutableMap;
 import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.config.CKeys;
+import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.config.CKeys;
-import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.mechanics.border.Border;
+import de.hglabor.plugins.uhc.game.mechanics.chat.BroadcastType;
 import de.hglabor.plugins.uhc.game.scenarios.DoubleHealth;
 import de.hglabor.plugins.uhc.game.scenarios.NoCooldown;
 import de.hglabor.utils.noriskutils.ChatUtils;
@@ -16,7 +18,6 @@ import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -26,11 +27,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class FarmPhase extends IngamePhase {
     private final int finalHeal;
+    private final int broadcastSwitchTime;
+    private int broadcastTime;
     private boolean wasFinalHeal;
+    private BroadcastType currentBroadcast;
 
     protected FarmPhase() {
         super(UHCConfig.getInteger(CKeys.FARM_FARM_TIME), PhaseType.FARM);
         this.finalHeal = UHCConfig.getInteger(CKeys.FARM_FINAL_HEAL);
+        this.currentBroadcast = BroadcastType.BORDER;
+        this.broadcastSwitchTime = UHCConfig.getInteger(CKeys.BROADCAST_NEW_TYPE);
     }
 
     @Override
@@ -61,10 +67,52 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     protected void tick(int timer) {
+        handleBroadcast(timer);
+
         announceNextPhase(timer);
         handleFinalHeal(timer);
         if (timer > maxPhaseTime) {
             this.startNextPhase();
+        }
+    }
+
+    /**
+     * lol
+     */
+    private void handleBroadcast(int timer) {
+        switch (currentBroadcast) {
+            case BORDER:
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    Border border = GameManager.INSTANCE.getBorder();
+                    player.sendActionBar("Nächster Bordershrink auf " + border.getNextBorderSize() + " in: " + TimeConverter.stringify(border.getNextShrinkTime() - timer));
+                });
+            case FINALHEAL:
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    player.sendActionBar("Final-Heal in: " + TimeConverter.stringify(finalHeal - timer));
+                });
+                break;
+            case INVINCIBILITY:
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    player.sendActionBar("Schutzzeit endet in: " + TimeConverter.stringify(maxPhaseTime - timer));
+                });
+                break;
+        }
+
+        broadcastTime++;
+
+        if (broadcastTime > broadcastSwitchTime) {
+            switch (currentBroadcast) {
+                case BORDER:
+                    currentBroadcast = BroadcastType.FINALHEAL;
+                    break;
+                case FINALHEAL:
+                    currentBroadcast = BroadcastType.INVINCIBILITY;
+                    break;
+                case INVINCIBILITY:
+                    currentBroadcast = BroadcastType.BORDER;
+                    break;
+            }
+            broadcastTime = 0;
         }
     }
 

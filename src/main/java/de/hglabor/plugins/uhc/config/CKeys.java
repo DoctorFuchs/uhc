@@ -32,4 +32,7 @@ public interface CKeys {
 
     String SERVER = "server";
     String SERVER_FOLDER_PATH = SERVER + "." + "serverFolderPath";
+
+    String BROADCAST = "broadcast";
+    String BROADCAST_NEW_TYPE = BROADCAST + "." + "newBroadcastInSeconds";
 }

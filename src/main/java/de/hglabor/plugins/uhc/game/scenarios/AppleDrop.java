@@ -1,9 +1,9 @@
 package de.hglabor.plugins.uhc.game.scenarios;
 
 import de.hglabor.plugins.uhc.Uhc;
-import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.utils.noriskutils.ChanceUtils;
 import de.hglabor.utils.noriskutils.ItemBuilder;
 import org.bukkit.Material;
@@ -45,13 +45,14 @@ public class AppleDrop extends Scenario {
     }
 
     private void dropApple(Block block) {
+        if (!isEnabled()) {
+            return;
+        }
         if (block.getType().name().toUpperCase().endsWith("_LEAVES")) {
             return;
         }
-        if (isEnabled()) {
-            if (ChanceUtils.roll(dropRate)) {
-                block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.APPLE));
-            }
+        if (ChanceUtils.roll(dropRate)) {
+            block.getWorld().dropItem(block.getLocation(), new ItemStack(Material.APPLE));
         }
     }
 }

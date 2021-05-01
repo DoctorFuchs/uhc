@@ -35,12 +35,12 @@ public class MobRemover implements Listener {
             event.setShouldAbortSpawn(true);
             event.setCancelled(true);
         }
-    } */
+    }
 
     @EventHandler
     private void onCreatureSpawn(CreatureSpawnEvent event) {
         if (event.getEntity() instanceof Animals) {
             event.getEntity().setAI(false);
         }
-    }
+    }  */
 }

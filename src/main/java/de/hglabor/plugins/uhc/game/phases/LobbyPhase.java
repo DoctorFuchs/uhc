@@ -29,6 +29,9 @@ public class LobbyPhase extends GamePhase {
     public LobbyPhase() {
         super(UHCConfig.getInteger(CKeys.LOBBY_START_TIME), PhaseType.LOBBY);
         this.lobby = Bukkit.getWorld("schematic");
+        //hardcoded lobby spawn
+        this.lobby.setSpawnLocation(0, 104, 0);
+        this.lobby.getWorldBorder().setSize(250);
     }
 
     @Override

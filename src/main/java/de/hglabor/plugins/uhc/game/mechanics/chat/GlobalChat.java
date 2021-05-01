@@ -1,4 +1,4 @@
-package de.hglabor.plugins.uhc.game.mechanics;
+package de.hglabor.plugins.uhc.game.mechanics.chat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,6 +19,7 @@ public class GlobalChat implements Listener {
     @EventHandler
     private void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         event.setFormat(chatFormat);
+
         Player player = event.getPlayer();
         if (isEnabled) return;
         event.setCancelled(!player.hasPermission("group.mod") && !player.isOp());

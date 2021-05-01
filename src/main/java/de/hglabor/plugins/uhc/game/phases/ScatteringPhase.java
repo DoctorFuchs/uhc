@@ -7,7 +7,7 @@ import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.PlayerScattering;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.PlayerList;
@@ -45,7 +45,7 @@ public class ScatteringPhase extends GamePhase {
         UHCConfig.setPvPWorldSettings(world);
         playerList.getLobbyPlayers().forEach(uhcPlayer -> {
             uhcPlayer.setStatus(UserStatus.SCATTERING);
-            uhcPlayer.getBukkitPlayer().ifPresent(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 10)));
+            uhcPlayer.getBukkitPlayer().ifPresent(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 2)));
         });
         maxPlayers = playerList.getScatteringPlayers().size();
         if (Teams.INSTANCE.isEnabled()) {

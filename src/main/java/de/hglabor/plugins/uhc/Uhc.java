@@ -7,7 +7,7 @@ import de.hglabor.plugins.uhc.command.WorldTp;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
-import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
@@ -31,8 +31,7 @@ public final class Uhc extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        DataPackUtils.generateNewWorld(UHCConfig.getString(CKeys.SERVER_FOLDER_PATH), "uhc");
-        UHCConfig.setLobbySettings(Bukkit.getWorld("world"));
+        DataPackUtils.generateNewWorld(UHCConfig.getString(CKeys.SERVER_FOLDER_PATH), "de.hglabor.uhc");
 
         GameManager gameManager = GameManager.INSTANCE;
         gameManager.addScenario(BloodDiamondsNetherite.INSTANCE);

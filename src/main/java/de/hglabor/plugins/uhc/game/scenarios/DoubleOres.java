@@ -23,14 +23,15 @@ public class DoubleOres extends Scenario {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (isEnabled()) {
-            Block block = event.getBlock();
-            Location location = block.getLocation();
-            if (ores.contains(block.getType())) {
-                block.getDrops().forEach(itemStack -> {
-                    location.getWorld().dropItem(location, itemStack);
-                });
-            }
+        if (!isEnabled()) {
+            return;
+        }
+        Block block = event.getBlock();
+        Location location = block.getLocation();
+        if (ores.contains(block.getType())) {
+            block.getDrops().forEach(itemStack -> {
+                location.getWorld().dropItem(location, itemStack);
+            });
         }
     }
 }

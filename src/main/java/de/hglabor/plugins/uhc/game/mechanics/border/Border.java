@@ -18,13 +18,13 @@ public class Border {
     private final int SHRINK_INTERVAL;
     private final int BORDER_SHRINK_SIZE;
     private final World overWorld;
-    private int nextShrink;
+    private int nextShrinkTime;
     private int borderSize;
     private int nextBorderSize;
     private boolean cutInHalf;
 
     public Border() {
-        this.nextShrink = UHCConfig.getInteger(CKeys.BORDER_FIRST_SHRINK);
+        this.nextShrinkTime = UHCConfig.getInteger(CKeys.BORDER_FIRST_SHRINK);
         this.SHRINK_INTERVAL = UHCConfig.getInteger(CKeys.BORDER_SHRINK_INTERVAL);
         this.BORDER_SHRINK_SIZE = UHCConfig.getInteger(CKeys.BORDER_SHRINK_SIZE);
         this.borderSize = UHCConfig.getInteger(CKeys.BORDER_START_SIZE);
@@ -52,7 +52,7 @@ public class Border {
 
     public void run() {
         if (borderSize > 25) {
-            nextShrink += SHRINK_INTERVAL;
+            nextShrinkTime += SHRINK_INTERVAL;
             borderSize = nextBorderSize;
             recalculateBorder();
             if (cutInHalf && borderSize <= 100) {
@@ -114,7 +114,7 @@ public class Border {
 
     public void announceBorderShrink(int time) {
         if (borderSize <= 25) return;
-        int timeLeft = nextShrink - time;
+        int timeLeft = nextShrinkTime - time;
         if (timeLeft <= 300) {
             if (timeLeft % 60 == 0 || timeLeft <= 5 || timeLeft == 10) {
               /*   ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
@@ -127,8 +127,8 @@ public class Border {
         }
     }
 
-    public int getNextShrink() {
-        return nextShrink;
+    public int getNextShrinkTime() {
+        return nextShrinkTime;
     }
 
     public String getBorderString(int time) {

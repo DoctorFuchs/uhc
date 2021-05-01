@@ -16,24 +16,26 @@ public class CrossBowless extends Scenario {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
-        if (isEnabled()) {
-            if (event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) {
-                return;
-            }
-            Material itemType = event.getCurrentItem().getType();
-            if (itemType == Material.BOW || itemType == Material.CROSSBOW || itemType == Material.ARROW) {
-                event.setCancelled(true);
-            }
+        if (!isEnabled()) {
+            return;
+        }
+        if (event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) {
+            return;
+        }
+        Material itemType = event.getCurrentItem().getType();
+        if (itemType == Material.BOW || itemType == Material.CROSSBOW || itemType == Material.ARROW) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onItemSpawn(ItemSpawnEvent event) {
-        if (isEnabled()) {
-            Material itemType = event.getEntity().getItemStack().getType();
-            if (itemType == Material.BOW || itemType == Material.CROSSBOW || itemType == Material.ARROW) {
-                event.setCancelled(true);
-            }
+        if (!isEnabled()) {
+            return;
+        }
+        Material itemType = event.getEntity().getItemStack().getType();
+        if (itemType == Material.BOW || itemType == Material.CROSSBOW || itemType == Material.ARROW) {
+            event.setCancelled(true);
         }
     }
 }

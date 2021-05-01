@@ -36,7 +36,7 @@ public class InfoCommand {
                             break;
                         case PVP:
                             Border border = GameManager.INSTANCE.getBorder();
-                            int timeLeft = border.getNextShrink() - GameManager.INSTANCE.getTimer();
+                            int timeLeft = border.getNextShrinkTime() - GameManager.INSTANCE.getTimer();
                             if (timeLeft >= 0) {
                                 player.sendMessage(ChatColor.AQUA + "Current Border: " + ChatColor.GREEN + border.getBorderSize());
                                 player.sendMessage(ChatColor.AQUA + "Next Border: " + ChatColor.GREEN + border.getNextBorderSize() + " in " + TimeConverter.stringify(timeLeft));

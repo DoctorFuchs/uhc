@@ -30,10 +30,10 @@ public class UHCConfig {
         plugin.getConfig().addDefault(CKeys.RELOG_TIME, 120);
         plugin.getConfig().addDefault(CKeys.PREGEN_WORLD, true);
 
-
         plugin.getConfig().addDefault(CKeys.SERVER_FOLDER_PATH, "/home/mcserver/uhc/");
 
-
+        //BROADCAST
+        plugin.getConfig().addDefault(CKeys.BROADCAST_NEW_TYPE, 5);
 
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveConfig();

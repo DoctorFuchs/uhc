@@ -24,7 +24,7 @@ public class PvPPhase extends IngamePhase {
     protected void tick(int timer) {
         Border border = GameManager.INSTANCE.getBorder();
         border.announceBorderShrink(timer);
-        if (timer == border.getNextShrink()) {
+        if (timer == border.getNextShrinkTime()) {
             border.run();
         }
     }
