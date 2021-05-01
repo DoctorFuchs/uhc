@@ -21,13 +21,9 @@ public class StartCommand {
                 })
                 .withRequirement((commandSender) -> GameManager.INSTANCE.getPhaseType().equals(PhaseType.LOBBY))
                 .executesPlayer((player, objects) -> {
-                    switch (GameManager.INSTANCE.getPhaseType()) {
-                        case LOBBY:
-                            LobbyPhase lobbyPhase = (LobbyPhase) GameManager.INSTANCE.getPhase();
-                            lobbyPhase.startNextPhase();
-                        case SCATTERING:
-                            GameManager.INSTANCE.getPhase().startNextPhase();
-                            break;
+                    if (GameManager.INSTANCE.getPhaseType() == PhaseType.LOBBY) {
+                        LobbyPhase lobbyPhase = (LobbyPhase) GameManager.INSTANCE.getPhase();
+                        lobbyPhase.startNextPhase();
                     }
                 }).register();
     }
