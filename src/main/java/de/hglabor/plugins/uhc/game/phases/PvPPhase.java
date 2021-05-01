@@ -6,6 +6,7 @@ import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,11 @@ public class PvPPhase extends IngamePhase {
     protected void tick(int timer) {
         Border border = GameManager.INSTANCE.getBorder();
         border.announceBorderShrink(timer);
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (border.getBorderSize() > border.getShortestBorderSize()) {
+                player.sendActionBar("N\u00E4chster Bordershrink auf " + border.getNextBorderSize() + " in: " + TimeConverter.stringify(border.getNextShrinkTime() - timer));
+            }
+        });
         if (timer == border.getNextShrinkTime()) {
             border.run();
         }

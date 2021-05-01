@@ -18,6 +18,7 @@ public class Border {
     private final int SHRINK_INTERVAL;
     private final int BORDER_SHRINK_SIZE;
     private final World overWorld;
+    private final int SHORTEST_BORDER_SIZE;
     private int nextShrinkTime;
     private int borderSize;
     private int nextBorderSize;
@@ -29,6 +30,7 @@ public class Border {
         this.BORDER_SHRINK_SIZE = UHCConfig.getInteger(CKeys.BORDER_SHRINK_SIZE);
         this.borderSize = UHCConfig.getInteger(CKeys.BORDER_START_SIZE);
         this.overWorld = Bukkit.getWorld("world");
+        this.SHORTEST_BORDER_SIZE = 25;
         init();
     }
 
@@ -51,7 +53,7 @@ public class Border {
     }
 
     public void run() {
-        if (borderSize > 25) {
+        if (borderSize > SHORTEST_BORDER_SIZE) {
             nextShrinkTime += SHRINK_INTERVAL;
             borderSize = nextBorderSize;
             recalculateBorder();
@@ -103,7 +105,7 @@ public class Border {
     private void recalculateBorder() {
         if (borderSize > 500) {
             nextBorderSize = Math.max(borderSize - BORDER_SHRINK_SIZE, 400);
-        } else if (borderSize > 25) {
+        } else if (borderSize > SHORTEST_BORDER_SIZE) {
             if (!cutInHalf) {
                 cutInHalf = true;
                 nextBorderSize = 400;
@@ -121,7 +123,7 @@ public class Border {
                         "size", String.valueOf(nextBorderSize),
                         "time", TimeConverter.stringify(timeLeft)));*/
                 Bukkit.broadcastMessage(ChatColor.AQUA + "Border will be shrinked to " +
-                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize +ChatColor.RESET + ChatColor.AQUA +
+                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize + ChatColor.RESET + ChatColor.AQUA +
                         " in " + ChatColor.GREEN + TimeConverter.stringify(timeLeft));
             }
         }
@@ -186,6 +188,9 @@ public class Border {
         }
     }
 
+    public int getShortestBorderSize() {
+        return SHORTEST_BORDER_SIZE;
+    }
 
     private int convert(double coord) {
         if (coord < 0) {

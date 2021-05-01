@@ -103,7 +103,7 @@ public class FarmPhase extends IngamePhase {
         if (broadcastTime > broadcastSwitchTime) {
             switch (currentBroadcast) {
                 case BORDER:
-                    currentBroadcast = BroadcastType.FINALHEAL;
+                    currentBroadcast = wasFinalHeal ? BroadcastType.INVINCIBILITY : BroadcastType.FINALHEAL;
                     break;
                 case FINALHEAL:
                     currentBroadcast = BroadcastType.INVINCIBILITY;

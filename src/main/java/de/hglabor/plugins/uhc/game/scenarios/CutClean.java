@@ -28,7 +28,7 @@ public class CutClean extends Scenario {
         }
         Block block = event.getBlock();
         for (CutCleanItems item : CutCleanItems.values()) {
-            if (item.name().equalsIgnoreCase(block.getType().name())) {
+            if (item.origin.equals(block.getType())) {
                 event.setDropItems(false);
                 block.getWorld().dropItem(block.getLocation(), new ItemStack(item.replacement));
                 ExperienceOrb orb = (ExperienceOrb) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
@@ -45,14 +45,14 @@ public class CutClean extends Scenario {
         List<ItemStack> toDelete = new ArrayList<>();
         for (ItemStack drop : event.getDrops()) {
             for (CutCleanItems ccItem : CutCleanItems.values()) {
-                if (ccItem.name().equalsIgnoreCase(drop.getType().toString())) {
+                if (ccItem.origin.equals(drop.getType())) {
                     toDelete.add(drop);
                 }
             }
         }
         for (ItemStack itemStack : toDelete) {
             for (CutCleanItems ccItem : CutCleanItems.values()) {
-                if (ccItem.name().equalsIgnoreCase(itemStack.getType().toString())) {
+                if (ccItem.origin.equals(itemStack.getType())) {
                     event.getDrops().add(new ItemStack(ccItem.replacement, itemStack.getAmount()));
                 }
             }
@@ -62,29 +62,33 @@ public class CutClean extends Scenario {
 
     private enum CutCleanItems {
         // Blocks
-        IRON_ORE(Material.IRON_INGOT, 2),
-        GOLD_ORE(Material.GOLD_INGOT, 3),
-        ANCIENT_DEBRIS(Material.NETHERITE_SCRAP, 4),
-        GRAVEL(Material.FLINT),
+        IRON_ORE(Material.IRON_ORE, Material.IRON_INGOT, 2),
+        GOLD_ORE(Material.GOLD_ORE, Material.GOLD_INGOT, 3),
+        ANCIENT_DEBRIS(Material.ANCIENT_DEBRIS, Material.NETHERITE_SCRAP, 4),
+        GRAVEL(Material.GRAVEL, Material.FLINT),
         // Mobs
-        PORKCHOP(Material.COOKED_PORKCHOP),
-        COD(Material.COOKED_COD),
-        SALMON(Material.COOKED_SALMON),
-        BEEF(Material.COOKED_BEEF),
-        CHICKEN(Material.COOKED_CHICKEN),
-        RABBIT(Material.COOKED_RABBIT),
-        MUTTON(Material.COOKED_MUTTON);
+        PORKCHOP(Material.PORKCHOP, Material.COOKED_PORKCHOP),
+        COD(Material.COD, Material.COOKED_COD),
+        SALMON(Material.SALMON, Material.COOKED_SALMON),
+        BEEF(Material.BEEF, Material.COOKED_BEEF),
+        CHICKEN(Material.CHICKEN, Material.COOKED_CHICKEN),
+        RABBIT(Material.RABBIT, Material.COOKED_RABBIT),
+        MUTTON(Material.MUTTON, Material.COOKED_MUTTON);
 
         private final Material replacement;
-        private int xpAmount = 0;
+        private final Material origin;
+        private int xpAmount;
 
-        CutCleanItems(Material replacement, int xpAmount) {
+        CutCleanItems(Material origin, Material replacement, int xpAmount) {
+            this.origin = origin;
             this.replacement = replacement;
             this.xpAmount = xpAmount;
         }
 
-        CutCleanItems(Material replacement) {
+        CutCleanItems(Material origin, Material replacement) {
+            this.origin = origin;
             this.replacement = replacement;
         }
+
     }
 }
