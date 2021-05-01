@@ -3,10 +3,6 @@ package de.hglabor.plugins.uhc.config;
 import de.hglabor.plugins.uhc.Uhc;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class UHCConfig {
 
@@ -18,6 +14,7 @@ public class UHCConfig {
 
         //SCATTER
         plugin.getConfig().addDefault(CKeys.SCATTER_TELEPORT_DELAY, 10);
+        plugin.getConfig().addDefault(CKeys.SCATTER_AMOUNT_TO_TELEPORT_EACH_TIME, 4);
 
         //FARM PHASE
         plugin.getConfig().addDefault(CKeys.FARM_FARM_TIME, 60 * 20);

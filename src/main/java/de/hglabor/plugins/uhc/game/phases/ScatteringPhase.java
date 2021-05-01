@@ -25,6 +25,8 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class ScatteringPhase extends GamePhase {
     private final World world;
@@ -38,15 +40,20 @@ public class ScatteringPhase extends GamePhase {
     @Override
     protected void init() {
         GlobalChat.INSTANCE.enable(false);
-       // MobRemover.INSTANCE.enable(world);
+        // MobRemover.INSTANCE.enable(world);
         UHCConfig.setPvPWorldSettings(world);
-        playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
+        playerList.getLobbyPlayers().forEach(uhcPlayer -> {
+            uhcPlayer.setStatus(UserStatus.SCATTERING);
+            uhcPlayer.getBukkitPlayer().ifPresent(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 10)));
+        });
         maxPlayers = playerList.getScatteringPlayers().size();
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
-            PlayerScattering playerScattering = new PlayerScattering(playerList.getScatteringPlayers(), 4);
-            playerScattering.runTaskTimer(Uhc.getPlugin(),0,UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY));
+            int amountToTeleport = UHCConfig.getInteger(CKeys.SCATTER_AMOUNT_TO_TELEPORT_EACH_TIME);
+            int teleportDelay = UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY);
+            PlayerScattering playerScattering = new PlayerScattering(playerList.getScatteringPlayers(), amountToTeleport);
+            playerScattering.runTaskTimer(Uhc.getPlugin(), 0, teleportDelay);
         }
     }
 

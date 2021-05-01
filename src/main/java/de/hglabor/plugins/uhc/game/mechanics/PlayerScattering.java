@@ -23,14 +23,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PlayerScattering extends BukkitRunnable {
     private final BossBar loadBar;
     private final List<UHCPlayer> toTeleport;
-    private final int size;
+    private final int playerAmount;
     private final AtomicInteger playerCounter;
     private final AtomicInteger cornerCounter;
     private final int amountToTeleportEachRun;
 
     public PlayerScattering(List<UHCPlayer> toTeleport, int amountToTeleportEachRun) {
         this.toTeleport = toTeleport;
-        this.size = toTeleport.size();
+        this.playerAmount = toTeleport.size();
         this.amountToTeleportEachRun = amountToTeleportEachRun;
         this.playerCounter = new AtomicInteger();
         this.cornerCounter = new AtomicInteger(1);
@@ -62,17 +62,16 @@ public class PlayerScattering extends BukkitRunnable {
             uhcPlayer.setSpawnLocation(getSpawnLocation());
             uhcPlayer.getBukkitPlayer().ifPresent(player -> {
                 player.teleport(uhcPlayer.getSpawnLocation());
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000000, 1000));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
                 player.setGameMode(GameMode.SURVIVAL);
                 uhcPlayer.setStatus(UserStatus.INGAME);
             });
             teleportedPlayers.add(uhcPlayer);
             counter++;
+            Bukkit.broadcastMessage("UHC: Es wurden " + playerCounter.getAndIncrement() + " von " + playerAmount + " teleportiert");
         }
-
         toTeleport.removeAll(teleportedPlayers);
-        loadBar.setProgress((double) playerCounter.get() / size);
+
+        loadBar.setProgress((double) playerCounter.get() / playerAmount);
     }
 
     private Location getSpawnLocation() {

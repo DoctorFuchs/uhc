@@ -8,6 +8,7 @@ public interface CKeys {
 
     String SCATTER = PHASE + "." + "scatter";
     String SCATTER_TELEPORT_DELAY = SCATTER + "." + "teleportDelay";
+    String SCATTER_AMOUNT_TO_TELEPORT_EACH_TIME = SCATTER + "." + "playerAmountToTeleport";
 
     String FARM = PHASE + "." + "farm";
     String FARM_FINAL_HEAL = FARM + "." + "finalHeal";
