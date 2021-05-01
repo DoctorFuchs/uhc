@@ -121,7 +121,7 @@ public class User implements UHCPlayer {
 
     @Override
     public Locale getLocale() {
-        return ChatUtils.getPlayerLocale(uuid);
+        return ChatUtils.locale(uuid);
     }
 
     @Override

@@ -16,6 +16,7 @@ import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;

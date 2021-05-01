@@ -47,7 +47,7 @@ public abstract class IngamePhase extends GamePhase {
         if (uhcPlayer.getStatus().equals(UserStatus.OFFLINE)) {
             uhcPlayer.setStatus(UserStatus.INGAME);
         } else if (uhcPlayer.getStatus().equals(UserStatus.ELIMINATED)) {
-            player.kickPlayer(Localization.INSTANCE.getMessage("ingamePhase.join.death", ChatUtils.getPlayerLocale(player)));
+            player.kickPlayer(Localization.INSTANCE.getMessage("ingamePhase.join.death", ChatUtils.locale(player)));
         } else if (uhcPlayer.getStatus().equals(UserStatus.LOBBY)) {
             player.kickPlayer(ChatColor.RED + "GAME ALREADY STARTED");
         }

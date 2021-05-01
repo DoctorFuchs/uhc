@@ -5,18 +5,17 @@ import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -29,7 +28,7 @@ public class LobbyPhase extends GamePhase {
 
     public LobbyPhase() {
         super(UHCConfig.getInteger(CKeys.LOBBY_START_TIME), PhaseType.LOBBY);
-        this.lobby = Bukkit.getWorld("lobby");
+        this.lobby = Bukkit.getWorld("schematic");
     }
 
     @Override
@@ -76,6 +75,7 @@ public class LobbyPhase extends GamePhase {
     private void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.ADVENTURE);
         UHCPlayer uhcPlayer = playerList.getPlayer(player);
         player.teleport(lobby.getSpawnLocation());
     }
@@ -84,11 +84,6 @@ public class LobbyPhase extends GamePhase {
     private void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
         playerList.remove(event.getPlayer().getUniqueId());
-    }
-
-    @EventHandler
-    private void onCreatureSpawn(CreatureSpawnEvent event) {
-        event.setCancelled(true);
     }
 
     @EventHandler

@@ -29,4 +29,6 @@ public interface CKeys {
 
     String SCENARIOS = "scenarios";
 
+    String SERVER = "server";
+    String SERVER_FOLDER_PATH = SERVER + "." + "serverFolderPath";
 }

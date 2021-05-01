@@ -8,7 +8,6 @@ import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
-import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
 import de.hglabor.plugins.uhc.game.mechanics.PlayerScattering;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
@@ -16,9 +15,6 @@ import de.hglabor.plugins.uhc.player.UserStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -42,14 +38,14 @@ public class ScatteringPhase extends GamePhase {
     @Override
     protected void init() {
         GlobalChat.INSTANCE.enable(false);
-        MobRemover.INSTANCE.enable(world);
+       // MobRemover.INSTANCE.enable(world);
         UHCConfig.setPvPWorldSettings(world);
         playerList.getLobbyPlayers().forEach(uhcPlayer -> uhcPlayer.setStatus(UserStatus.SCATTERING));
         maxPlayers = playerList.getScatteringPlayers().size();
         if (Teams.INSTANCE.isEnabled()) {
 
         } else {
-            PlayerScattering playerScattering = new PlayerScattering(playerList.getScatteringPlayers());
+            PlayerScattering playerScattering = new PlayerScattering(playerList.getScatteringPlayers(), 4);
             playerScattering.runTaskTimer(Uhc.getPlugin(),0,UHCConfig.getInteger(CKeys.SCATTER_TELEPORT_DELAY));
         }
     }

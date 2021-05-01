@@ -13,9 +13,9 @@ import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
 import de.hglabor.plugins.uhc.game.scenarios.*;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
+import de.hglabor.utils.noriskutils.DataPackUtils;
 import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,7 +30,8 @@ public final class Uhc extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Bukkit.createWorld(new WorldCreator("lobby"));
+        DataPackUtils.generateNewWorld(UHCConfig.getString(CKeys.SERVER_FOLDER_PATH), "uhc");
+        UHCConfig.setLobbySettings(Bukkit.getWorld("world"));
 
         GameManager gameManager = GameManager.INSTANCE;
         gameManager.addScenario(BloodDiamondsNetherite.INSTANCE);
@@ -66,7 +67,11 @@ public final class Uhc extends JavaPlugin {
         registerCommand();
         registerListener();
         if (UHCConfig.getBoolean(CKeys.PREGEN_WORLD)) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fcp fillvanilla 0 world");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky cancel");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky confirm");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky world world");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky worldborder");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky start");
         }
     }
 

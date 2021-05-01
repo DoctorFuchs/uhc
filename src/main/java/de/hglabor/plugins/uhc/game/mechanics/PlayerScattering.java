@@ -2,12 +2,12 @@ package de.hglabor.plugins.uhc.game.mechanics;
 
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
-import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,10 +26,12 @@ public class PlayerScattering extends BukkitRunnable {
     private final int size;
     private final AtomicInteger playerCounter;
     private final AtomicInteger cornerCounter;
+    private final int amountToTeleportEachRun;
 
-    public PlayerScattering(List<UHCPlayer> toTeleport) {
+    public PlayerScattering(List<UHCPlayer> toTeleport, int amountToTeleportEachRun) {
         this.toTeleport = toTeleport;
         this.size = toTeleport.size();
+        this.amountToTeleportEachRun = amountToTeleportEachRun;
         this.playerCounter = new AtomicInteger();
         this.cornerCounter = new AtomicInteger(1);
         this.loadBar = Bukkit.createBossBar(ChatColor.BOLD + "Scattering | Don't logout", BarColor.GREEN, BarStyle.SOLID);
@@ -42,22 +45,33 @@ public class PlayerScattering extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (playerCounter.get() == size) {
+        if (toTeleport.isEmpty()) {
             loadBar.removeAll();
             GameManager.INSTANCE.getPhase().startNextPhase();
             cancel();
             return;
         }
 
-        UHCPlayer toTeleport = this.toTeleport.get(playerCounter.getAndIncrement());
-        toTeleport.setSpawnLocation(getSpawnLocation());
-        toTeleport.getBukkitPlayer().ifPresentOrElse(player -> {
-            player.teleport(toTeleport.getSpawnLocation());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000000, 1000));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
-            toTeleport.setStatus(UserStatus.INGAME);
-        }, () -> PlayerList.INSTANCE.remove(toTeleport.getUuid()));
+        int counter = 0;
+        List<UHCPlayer> teleportedPlayers = new ArrayList<>();
 
+        for (UHCPlayer uhcPlayer : toTeleport) {
+            if (counter >= amountToTeleportEachRun) {
+                break;
+            }
+            uhcPlayer.setSpawnLocation(getSpawnLocation());
+            uhcPlayer.getBukkitPlayer().ifPresent(player -> {
+                player.teleport(uhcPlayer.getSpawnLocation());
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000000, 1000));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 30, 10));
+                player.setGameMode(GameMode.SURVIVAL);
+                uhcPlayer.setStatus(UserStatus.INGAME);
+            });
+            teleportedPlayers.add(uhcPlayer);
+            counter++;
+        }
+
+        toTeleport.removeAll(teleportedPlayers);
         loadBar.setProgress((double) playerCounter.get() / size);
     }
 

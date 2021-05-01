@@ -39,6 +39,8 @@ repositories {
         url = uri("https://maven.pkg.github.com/HGLabor/Localization")
     }
 
+    // AnvilGUI
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven { url = uri("https://mvn.intellectualsites.com/content/repositories/releases/") }  //FAWE
 }
 
@@ -47,9 +49,9 @@ dependencies {
     compileOnly("org.bukkit:craftbukkit:1.16.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.fawe:FAWE-Bukkit:1.16-583")
     implementation("dev.jorel:commandapi-shade:5.8")
-    implementation("de.hglabor:hglabor-utils:0.0.4")
-    implementation("de.hglabor:localization:0.0.5")
-    implementation("net.axay:KSpigot:v1.16.5_R24")
+    implementation("de.hglabor:hglabor-utils:0.0.7")
+    implementation("de.hglabor:localization:0.0.6")
+    implementation("net.axay:kspigot:1.16.26")
 }
 
 group = "de.hglabor.plugins"

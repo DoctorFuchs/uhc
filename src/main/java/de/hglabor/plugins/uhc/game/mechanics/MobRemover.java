@@ -1,19 +1,13 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
-import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import org.bukkit.World;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
-import java.util.Set;
-
 public class MobRemover implements Listener {
     public final static MobRemover INSTANCE = new MobRemover();
-    private final Set<EntityType> disabledTypes;
+   /* private final Set<EntityType> disabledTypes;
 
     private MobRemover() {
         this.disabledTypes = Set.of(
@@ -41,7 +35,7 @@ public class MobRemover implements Listener {
             event.setShouldAbortSpawn(true);
             event.setCancelled(true);
         }
-    }
+    } */
 
     @EventHandler
     private void onCreatureSpawn(CreatureSpawnEvent event) {

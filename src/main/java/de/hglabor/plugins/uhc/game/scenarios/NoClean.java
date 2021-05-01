@@ -58,7 +58,7 @@ public class NoClean extends Scenario {
                 if (threads.containsKey(player)) {
                     damager.sendMessage(Localization.INSTANCE.getMessage("scenario.noclean.timeleft",
                             ImmutableMap.of("numberInSeconds", String.valueOf(threads.get(player).getRemainingTime())),
-                            ChatUtils.getPlayerLocale(player)));
+                            ChatUtils.locale(player)));
                 }
 
                 if (threads.containsKey(damager)) {
@@ -92,7 +92,7 @@ public class NoClean extends Scenario {
             this.task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.sendMessage(Localization.INSTANCE.getMessage("scenario.noclean.end",  ChatUtils.getPlayerLocale(player)));
+                    player.sendMessage(Localization.INSTANCE.getMessage("scenario.noclean.end",  ChatUtils.locale(player)));
                     threads.remove(player);
                 }
             }.runTaskLater(Uhc.getPlugin(), 20 * 30);
