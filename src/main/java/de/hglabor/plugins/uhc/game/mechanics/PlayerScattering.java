@@ -67,7 +67,7 @@ public class PlayerScattering extends BukkitRunnable {
             });
             teleportedPlayers.add(uhcPlayer);
             counter++;
-            Bukkit.broadcastMessage("UHC: Es wurden " + playerCounter.getAndIncrement() + " von " + playerAmount + " teleportiert");
+            Bukkit.broadcastMessage("UHC: Es wurden " + playerCounter.incrementAndGet() + " von " + playerAmount + " teleportiert");
         }
         toTeleport.removeAll(teleportedPlayers);
 
