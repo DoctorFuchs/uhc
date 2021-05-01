@@ -7,6 +7,7 @@ import de.hglabor.plugins.uhc.command.WorldTp;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
+import de.hglabor.plugins.uhc.game.mechanics.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.mechanics.MobRemover;
@@ -86,6 +87,7 @@ public final class Uhc extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
+        pluginManager.registerEvents(GlobalChat.INSTANCE, this);
         pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
         pluginManager.registerEvents(MobRemover.INSTANCE, this);
     }
