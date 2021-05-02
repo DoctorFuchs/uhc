@@ -58,10 +58,10 @@ public class FarmPhase extends IngamePhase {
 
     @Override
     protected void tick(int timer) {
-        handleBroadcast(timer);
-
         announceNextPhase(timer);
         handleFinalHeal(timer);
+
+        handleBroadcast(timer);
         if (timer > maxPhaseTime) {
             this.startNextPhase();
         }
@@ -77,6 +77,7 @@ public class FarmPhase extends IngamePhase {
                     Border border = GameManager.INSTANCE.getBorder();
                     player.sendActionBar("Nächster Bordershrink auf " + border.getNextBorderSize() + " in: " + TimeConverter.stringify(border.getNextShrinkTime() - timer));
                 });
+                break;
             case FINALHEAL:
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendActionBar("Final-Heal in: " + TimeConverter.stringify(finalHeal - timer)));
                 break;
@@ -90,11 +91,7 @@ public class FarmPhase extends IngamePhase {
         if (broadcastTime > broadcastSwitchTime) {
             switch (currentBroadcast) {
                 case BORDER:
-                    if (wasFinalHeal) {
-                        currentBroadcast = BroadcastType.INVINCIBILITY;
-                    } else {
-                        currentBroadcast = BroadcastType.FINALHEAL;
-                    }
+                    currentBroadcast = wasFinalHeal ? BroadcastType.INVINCIBILITY : BroadcastType.FINALHEAL;
                     break;
                 case FINALHEAL:
                     currentBroadcast = BroadcastType.INVINCIBILITY;
