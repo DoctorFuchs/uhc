@@ -1,12 +1,18 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
 import de.hglabor.plugins.uhc.Uhc;
+import de.hglabor.plugins.uhc.game.mechanics.events.PlayerKilledPlayerEvent;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import net.minecraft.server.v1_16_R3.EnumItemSlot;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftZombie;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
@@ -63,22 +69,23 @@ public final class CombatLogger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Zombie) {
-            Zombie zombie = (Zombie) event.getEntity();
-            for (UUID uuid : inventories.keySet()) {
-                if (zombie.hasMetadata(uuid.toString())) {
-                    modifyZombieDrop(event, uuid);
-                    PlayerList.INSTANCE.getPlayer(uuid).ifPresent(uhcPlayer -> {
-                        uhcPlayer.setStatus(UserStatus.ELIMINATED);
-                        uhcPlayer.setCombatLogMob(null);
-                        uhcPlayer.getBukkitPlayer().ifPresent(player -> player.kickPlayer("Your combatlogger died"));
-                        if (zombie.getKiller() != null) {
-                            deathMessenger.broadcast(PlayerList.INSTANCE.getPlayer(zombie.getKiller()), uhcPlayer);
-                        }
-                    });
-                    zombie.remove();
-                    return;
-                }
+        if (!(event.getEntity() instanceof Zombie)) {
+            return;
+        }
+        Zombie zombie = (Zombie) event.getEntity();
+        for (UUID uuid : inventories.keySet()) {
+            if (zombie.hasMetadata(uuid.toString())) {
+                modifyZombieDrop(event, uuid);
+                PlayerList.INSTANCE.getPlayer(uuid).ifPresent(uhcPlayer -> {
+                    uhcPlayer.setStatus(UserStatus.ELIMINATED);
+                    uhcPlayer.setCombatLogMob(null);
+                    uhcPlayer.getBukkitPlayer().ifPresent(player -> player.kickPlayer(ChatColor.RED + "Your combatlogger died"));
+                    if (zombie.getKiller() != null) {
+                        Bukkit.getPluginManager().callEvent(new PlayerKilledPlayerEvent(zombie.getKiller(), zombie, uuid));
+                    }
+                });
+                zombie.remove();
+                return;
             }
         }
     }
@@ -91,7 +98,6 @@ public final class CombatLogger implements Listener {
         Inventory inventory = inventories.get(uuid);
         inventories.remove(uuid);
         event.getDrops().addAll(Arrays.asList(inventory.getContents()));
-        Bukkit.broadcastMessage("dropping items");
     }
 
     private void spawnCombatLogZombie(Player player, UHCPlayer uhcPlayer) {
@@ -111,6 +117,17 @@ public final class CombatLogger implements Listener {
         setItem(zombie, player.getInventory().getBoots(), EnumItemSlot.FEET);
         setItem(zombie, player.getInventory().getItemInMainHand(), EnumItemSlot.MAINHAND);
         setItem(zombie, player.getInventory().getItemInOffHand(), EnumItemSlot.OFFHAND);
+    }
+
+    public void placeHead(Location location, UUID player) {
+        Block headBlock = location.clone().add(0, 1, 0).getBlock();
+        Block footBlock = location.clone().getBlock();
+        headBlock.setType(Material.PLAYER_HEAD);
+        BlockState state = headBlock.getState();
+        Skull head = (Skull) state;
+        head.setOwningPlayer(Bukkit.getOfflinePlayer(player));
+        head.update();
+        footBlock.setType(Material.WARPED_FENCE);
     }
 
     private void setItem(Zombie zombie, ItemStack itemStack, EnumItemSlot slot) {

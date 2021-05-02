@@ -49,11 +49,14 @@ public class PvPPhase extends IngamePhase {
         return null;
     }
 
+    @Deprecated
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             UHCPlayer player = playerList.getPlayer((Player) event.getEntity());
-            if (player.isTeleporting()) event.setCancelled(true);
+            if (player.isTeleporting()) {
+                event.setCancelled(true);
+            }
         }
     }
 }
