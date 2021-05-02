@@ -87,7 +87,6 @@ public final class Uhc extends JavaPlugin {
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
         pluginManager.registerEvents(GlobalChat.INSTANCE, this);
         pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
-        pluginManager.registerEvents(MobRemover.INSTANCE, this);
     }
 
     @Override

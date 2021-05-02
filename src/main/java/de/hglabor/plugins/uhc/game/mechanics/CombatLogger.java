@@ -34,12 +34,10 @@ public final class CombatLogger implements Listener {
     public final static CombatLogger INSTANCE = new CombatLogger();
     private final Map<UUID, Inventory> inventories;
     private final OfflineTimer offlineTimer;
-    private final DeathMessenger deathMessenger;
 
     private CombatLogger() {
         this.inventories = new HashMap<>();
         this.offlineTimer = new OfflineTimer();
-        this.deathMessenger = new DeathMessenger();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

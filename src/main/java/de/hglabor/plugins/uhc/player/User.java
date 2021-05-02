@@ -45,16 +45,6 @@ public class User implements UHCPlayer {
     }
 
     @Override
-    public boolean isTeleporting() {
-        return isTeleporting;
-    }
-
-    @Override
-    public void setTeleporting(boolean value) {
-        isTeleporting = value;
-    }
-
-    @Override
     public UserStatus getStatus() {
         return status;
     }

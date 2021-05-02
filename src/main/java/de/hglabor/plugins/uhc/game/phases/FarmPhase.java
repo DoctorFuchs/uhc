@@ -7,19 +7,17 @@ import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.mechanics.chat.BroadcastType;
-import de.hglabor.plugins.uhc.game.scenarios.DoubleHealth;
-import de.hglabor.plugins.uhc.game.scenarios.NoCooldown;
 import de.hglabor.utils.noriskutils.ChatUtils;
 import de.hglabor.utils.noriskutils.PotionUtils;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -53,16 +51,9 @@ public class FarmPhase extends IngamePhase {
             player.setFireTicks(0);
             player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 20));
             PotionUtils.removePotionEffects(player);
-
-            if (NoCooldown.INSTANCE.isEnabled()) {
-                player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(100);
-            }
-
-            if (DoubleHealth.INSTANCE.isEnabled()) {
-                player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40);
-                player.setHealth(40);
-            }
         }
+        //SCENARIOS
+        GameManager.INSTANCE.getScenarios().stream().filter(Scenario::isEnabled).forEach(Scenario::onPvPPhase);
     }
 
     @Override
@@ -87,14 +78,10 @@ public class FarmPhase extends IngamePhase {
                     player.sendActionBar("Nächster Bordershrink auf " + border.getNextBorderSize() + " in: " + TimeConverter.stringify(border.getNextShrinkTime() - timer));
                 });
             case FINALHEAL:
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendActionBar("Final-Heal in: " + TimeConverter.stringify(finalHeal - timer));
-                });
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendActionBar("Final-Heal in: " + TimeConverter.stringify(finalHeal - timer)));
                 break;
             case INVINCIBILITY:
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendActionBar("Schutzzeit endet in: " + TimeConverter.stringify(maxPhaseTime - timer));
-                });
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendActionBar("Schutzzeit endet in: " + TimeConverter.stringify(maxPhaseTime - timer)));
                 break;
         }
 
@@ -103,7 +90,11 @@ public class FarmPhase extends IngamePhase {
         if (broadcastTime > broadcastSwitchTime) {
             switch (currentBroadcast) {
                 case BORDER:
-                    currentBroadcast = wasFinalHeal ? BroadcastType.INVINCIBILITY : BroadcastType.FINALHEAL;
+                    if (wasFinalHeal) {
+                        currentBroadcast = BroadcastType.INVINCIBILITY;
+                    } else {
+                        currentBroadcast = BroadcastType.FINALHEAL;
+                    }
                     break;
                 case FINALHEAL:
                     currentBroadcast = BroadcastType.INVINCIBILITY;

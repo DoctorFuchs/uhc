@@ -26,13 +26,15 @@ public abstract class Scenario implements Listener {
     protected void loadConfig() {
     }
 
-
     public boolean isEnabled() {
         return isEnabled;
     }
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public void onPvPPhase() {
     }
 
     public String getName() {

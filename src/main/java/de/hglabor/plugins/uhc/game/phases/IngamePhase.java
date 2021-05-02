@@ -79,12 +79,10 @@ public abstract class IngamePhase extends GamePhase {
             } else {
                 deathMessenger.broadcast(uhcPlayer);
             }
-
             if (!Timebomb.INSTANCE.isEnabled()) {
                 CombatLogger.INSTANCE.placeHead(player.getLocation(), player.getUniqueId());
             }
         }
-        
         if (player.hasPermission("hglabor.spectator")) {
             player.setGameMode(GameMode.SPECTATOR);
             uhcPlayer.setStatus(UserStatus.SPECTATOR);

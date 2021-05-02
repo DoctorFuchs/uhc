@@ -52,10 +52,15 @@ public class HeartDisplay implements Listener {
     }
 
     public void enableHealthBar(Player player) {
-        UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
-        Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "\u2764", RenderType.HEARTS);
-        objective.getScore(uhcPlayer.getName()).setScore((int) player.getHealth());
-        objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        //You got a problem? Try and Catch is se solution PogU
+        try {
+            UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
+            Objective objective = uhcPlayer.getScoreboard().registerNewObjective("health", "health", ChatColor.RED + "\u2764", RenderType.HEARTS);
+            objective.getScore(uhcPlayer.getName()).setScore((int) player.getHealth());
+            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateHeal(Player player) {
