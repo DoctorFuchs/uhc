@@ -1,9 +1,6 @@
 package de.hglabor.plugins.uhc;
 
-import de.hglabor.plugins.uhc.command.GlobalChatCommand;
-import de.hglabor.plugins.uhc.command.InfoCommand;
-import de.hglabor.plugins.uhc.command.StartCommand;
-import de.hglabor.plugins.uhc.command.WorldTp;
+import de.hglabor.plugins.uhc.command.*;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
@@ -79,6 +76,7 @@ public final class Uhc extends JavaPlugin {
         new GlobalChatCommand();
         new InfoCommand();
         new WorldTp();
+        new PvPPhaseCommand();
     }
 
     public void registerListener() {
