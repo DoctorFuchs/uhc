@@ -3,8 +3,8 @@ package de.hglabor.plugins.uhc.game.scenarios;
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.utils.noriskutils.ItemBuilder;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -91,7 +91,7 @@ public class Timebomb extends Scenario {
         private void summonArmorStand(Location location) {
             armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
             armorStand.setVisible(false);
-            armorStand.setCustomName(String.format(ChatColor.AQUA + "%ds", timeLeft));
+            armorStand.setCustomName(String.format(GlobalChat.hexColor("#EC2828") + "%ds", timeLeft));
             armorStand.setCustomNameVisible(true);
             armorStand.setGravity(false);
         }
@@ -99,7 +99,7 @@ public class Timebomb extends Scenario {
         @Override
         public void run() {
             if (timeLeft > 0) {
-                armorStand.setCustomName(String.format(ChatColor.AQUA + "%ds", timeLeft));
+                armorStand.setCustomName(String.format(GlobalChat.hexColor("#EC2828") + "%ds", timeLeft));
                 timeLeft--;
             } else {
                 leftBlock.setType(Material.AIR);

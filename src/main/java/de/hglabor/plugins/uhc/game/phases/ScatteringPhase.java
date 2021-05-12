@@ -7,8 +7,8 @@ import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
-import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.PlayerScattering;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.scenarios.Teams;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
@@ -65,7 +65,7 @@ public class ScatteringPhase extends GamePhase {
 
     @Override
     public String getTimeString(int timer) {
-        return ChatColor.AQUA + "Loading: " + ChatColor.GREEN + playerList.getAlivePlayers().size() + "/" + maxPlayers;
+        return GlobalChat.hexColor("#EC2828") + "Loading: " + GlobalChat.hexColor("#F45959") + playerList.getAlivePlayers().size() + "/" + maxPlayers;
     }
 
     @Override
@@ -154,5 +154,12 @@ public class ScatteringPhase extends GamePhase {
     @EventHandler
     private void onPlayerDropItem(PlayerDropItemEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
+        if (event.getPlayer().getWorld().equals(Bukkit.getWorld("schematic"))) {
+            event.setCancelled(true);
+        }
     }
 }

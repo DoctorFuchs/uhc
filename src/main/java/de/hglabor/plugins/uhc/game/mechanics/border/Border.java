@@ -8,6 +8,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import de.hglabor.plugins.uhc.Uhc;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
@@ -122,9 +123,9 @@ public class Border {
               /*   ChatUtils.broadcastMessage("border.shrink", ImmutableMap.of(
                         "size", String.valueOf(nextBorderSize),
                         "time", TimeConverter.stringify(timeLeft)));*/
-                Bukkit.broadcastMessage(ChatColor.AQUA + "Border will be shrinked to " +
-                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize + ChatColor.RESET + ChatColor.AQUA +
-                        " in " + ChatColor.GREEN + TimeConverter.stringify(timeLeft));
+                Bukkit.broadcastMessage(GlobalChat.hexColor("#EC2828") + "Border will be shrinked to " +
+                        ChatColor.RED + ChatColor.BOLD + nextBorderSize + "x" + nextBorderSize + ChatColor.RESET + GlobalChat.hexColor("#EC2828") +
+                        " in " + GlobalChat.hexColor("#F45959") + TimeConverter.stringify(timeLeft));
             }
         }
     }
@@ -134,7 +135,7 @@ public class Border {
     }
 
     public String getBorderString(int time) {
-        return ChatColor.AQUA + "Border: " + ChatColor.GREEN + borderSize;
+        return GlobalChat.hexColor("#EC2828") + "Border: " + GlobalChat.hexColor("#F45959") + borderSize;
     }
 
     public int getBorderSize() {

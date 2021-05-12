@@ -1,5 +1,6 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import org.bukkit.ChatColor;
@@ -47,7 +48,7 @@ public class HeartDisplay implements Listener {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (shooter instanceof Player) {
             LivingEntity hitEntity = (LivingEntity) event.getHitEntity();
-            ((Player) shooter).sendMessage(ChatColor.AQUA + hitEntity.getName() + " is now at " + ChatColor.GREEN + hitEntity.getHealth() + ChatColor.RED + " \u2764");
+            ((Player) shooter).sendMessage(GlobalChat.hexColor("#EC2828") + hitEntity.getName() + " is now at " + GlobalChat.hexColor("#F45959") + hitEntity.getHealth() + ChatColor.RED + " \u2764");
         }
     }
 

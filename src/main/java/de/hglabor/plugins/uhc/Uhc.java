@@ -4,15 +4,17 @@ import de.hglabor.plugins.uhc.command.*;
 import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
-import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
 import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
+import de.hglabor.plugins.uhc.game.mechanics.MobAIRemover;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.scenarios.*;
 import de.hglabor.plugins.uhc.scoreboard.ScoreboardManager;
 import de.hglabor.utils.localization.Localization;
 import de.hglabor.utils.noriskutils.DataPackUtils;
 import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,7 +29,8 @@ public final class Uhc extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        DataPackUtils.generateNewWorld(UHCConfig.getString(CKeys.SERVER_FOLDER_PATH), "de.hglabor.uhc.worldgenerator");
+        String homeDir = this.getDataFolder().getParentFile().getAbsolutePath().replaceAll("/plugins", "");
+        DataPackUtils.generateNewWorld(homeDir, "de.hglabor.uhc.worldgenerator");
 
         GameManager gameManager = GameManager.INSTANCE;
         gameManager.addScenario(BloodDiamondsNetherite.INSTANCE);
@@ -54,7 +57,6 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(DoubleHealth.INSTANCE);
         gameManager.addScenario(FlowerPower.INSTANCE);
         gameManager.addScenario(Shieldless.INSTANCE);
-        gameManager.enableScenarios();
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
@@ -63,6 +65,7 @@ public final class Uhc extends JavaPlugin {
         registerCommand();
         registerListener();
         if (UHCConfig.getBoolean(CKeys.PREGEN_WORLD)) {
+            Bukkit.broadcastMessage(GlobalChat.getPrefix() + ChatColor.BOLD + "PREGENERATING WORLD");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky cancel");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky confirm");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chunky world world");
@@ -77,6 +80,7 @@ public final class Uhc extends JavaPlugin {
         new InfoCommand();
         new WorldTp();
         new PvPPhaseCommand();
+        new BorderCommand();
     }
 
     public void registerListener() {
@@ -85,6 +89,7 @@ public final class Uhc extends JavaPlugin {
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
         pluginManager.registerEvents(GlobalChat.INSTANCE, this);
         pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
+        pluginManager.registerEvents(new MobAIRemover(), this);
     }
 
     @Override

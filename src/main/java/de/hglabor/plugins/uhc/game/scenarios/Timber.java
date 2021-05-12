@@ -1,6 +1,5 @@
 package de.hglabor.plugins.uhc.game.scenarios;
 
-import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.utils.noriskutils.ItemBuilder;
 import org.bukkit.Material;
@@ -24,18 +23,23 @@ public class Timber extends Scenario {
         Block block = event.getBlock();
         String blockTypeName = block.getType().name().toLowerCase();
         if (blockTypeName.contains("wood") || blockTypeName.contains("log")) {
-            breakSurroundingWood(block);
+            breakSurroundingWood(block, 0);
         }
     }
 
-    public void breakSurroundingWood(Block block) {
+    public void breakSurroundingWood(Block block, int amount) {
         String blockTypeName = block.getType().name().toLowerCase();
+
+        if (amount > 12) {
+            return;
+        }
+
         if (blockTypeName.contains("wood") || blockTypeName.contains("log")) {
             block.breakNaturally();
 
-            BlockFace[] faces = { BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
+            BlockFace[] faces = {BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST};
             for (BlockFace face : faces) {
-                breakSurroundingWood(block.getRelative(face));
+                breakSurroundingWood(block.getRelative(face), amount++);
             }
         }
     }

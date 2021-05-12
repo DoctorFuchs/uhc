@@ -28,11 +28,11 @@ public class Soup extends Scenario {
                 if (event.getHand() == EquipmentSlot.OFF_HAND) { return; }
 
                 if (player.getHealth() < player.getHealthScale()) {
-                    player.setHealth(Math.min(player.getHealth() + 7, player.getHealthScale()));
+                    player.setHealth(Math.min(player.getHealth() + 4, player.getHealthScale()));
                     player.getInventory().setItemInMainHand(new ItemStack(Material.BOWL));
                 } else if (player.getFoodLevel() < 20) {
                     player.setFoodLevel(Math.min(player.getFoodLevel() + 6, 20));
-                    player.setSaturation(player.getSaturation() + 7);
+                    player.setSaturation(player.getSaturation() + 4);
                     player.getInventory().setItemInMainHand(new ItemStack(Material.BOWL));
                 }
             }

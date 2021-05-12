@@ -5,4 +5,4 @@ api-version: 1.16
 authors: [ NoRiskk ]
 description: 1.16 Ultra Hardcore
 website: hglabor.de
-depend: [ "FastAsyncWorldEdit" ]
+depend: [ "Chunky" ]

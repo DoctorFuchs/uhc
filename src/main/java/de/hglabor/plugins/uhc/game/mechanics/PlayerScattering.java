@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.game.mechanics;
 
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.mechanics.border.Corner;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.plugins.uhc.util.SpawnUtils;
@@ -65,7 +66,7 @@ public class PlayerScattering extends BukkitRunnable {
             });
             teleportedPlayers.add(uhcPlayer);
             counter++;
-            Bukkit.broadcastMessage("UHC: Es wurden " + playerCounter.incrementAndGet() + " von " + playerAmount + " teleportiert");
+            Bukkit.broadcastMessage(GlobalChat.getPrefix() + GlobalChat.hexColor("#F45959") + "Es wurden " + playerCounter.incrementAndGet() + " von " + playerAmount + " teleportiert");
         }
         toTeleport.removeAll(teleportedPlayers);
 

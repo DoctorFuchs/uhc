@@ -5,11 +5,11 @@ import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.plugins.uhc.player.UserStatus;
 import de.hglabor.utils.noriskutils.TimeConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -66,7 +66,7 @@ public class LobbyPhase extends GamePhase {
     @Override
     public String getTimeString(int timer) {
         int timeLeft = maxPhaseTime - timer;
-        return ChatColor.AQUA + "Start: " + ChatColor.GREEN + TimeConverter.stringify(timeLeft);
+        return GlobalChat.hexColor("#EC2828") + "Start: " + GlobalChat.hexColor("#F45959") + TimeConverter.stringify(timeLeft);
     }
 
     @Override
@@ -136,6 +136,11 @@ public class LobbyPhase extends GamePhase {
 
     @EventHandler
     private void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
         event.setCancelled(true);
     }
 }

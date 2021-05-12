@@ -1,5 +1,6 @@
 package de.hglabor.plugins.uhc.game.mechanics;
 
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,7 +11,7 @@ public class DeathMessenger {
 
     public void broadcast(UHCPlayer killer, UHCPlayer dead) {
         String deadText = ChatColor.RED + dead.getName() + "[" + dead.getKills() + "]";
-        String killerText = ChatColor.GREEN + killer.getName() + "[" + killer.getKills() + "]";
+        String killerText = GlobalChat.hexColor("#F45959") + killer.getName() + "[" + killer.getKills() + "]";
         String slainText = ChatColor.GRAY + " was slain by ";
         Bukkit.broadcastMessage(deadText + slainText + killerText);
     }

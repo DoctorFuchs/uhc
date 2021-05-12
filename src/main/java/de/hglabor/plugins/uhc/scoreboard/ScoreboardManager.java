@@ -2,6 +2,7 @@ package de.hglabor.plugins.uhc.scoreboard;
 
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
+import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.player.PlayerList;
 import de.hglabor.plugins.uhc.player.UHCPlayer;
 import de.hglabor.utils.noriskutils.TimeConverter;
@@ -21,7 +22,7 @@ public final class ScoreboardManager implements Listener {
     }
 
     public static void setBasicScoreboardLayout(ScoreboardPlayer player) {
-        String placeHolder = ChatColor.STRIKETHROUGH + "                   ";
+        String placeHolder = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "                   ";
         ScoreboardFactory.addEntry(player, "placeHolder2", placeHolder, 5);
         ScoreboardFactory.addEntry(player, "time", "Start: " + TimeConverter.stringify(180), 4);
         ScoreboardFactory.addEntry(player, "players", "Players: " + Bukkit.getOnlinePlayers().size(), 3);
@@ -35,8 +36,8 @@ public final class ScoreboardManager implements Listener {
             uhcPlayer.getBukkitPlayer().ifPresent(player -> {
                 GamePhase phase = GameManager.INSTANCE.getPhase();
                 ScoreboardFactory.updateEntry(uhcPlayer, "time", phase.getTimeString(time));
-                ScoreboardFactory.updateEntry(uhcPlayer, "players", ChatColor.AQUA + "Players: " + ChatColor.GREEN + phase.getAlivePlayers());
-                ScoreboardFactory.updateEntry(uhcPlayer, "kills", ChatColor.AQUA + "Kills: " + ChatColor.GREEN + uhcPlayer.getKills().get());
+                ScoreboardFactory.updateEntry(uhcPlayer, "players", GlobalChat.hexColor("#EC2828") + "Players: " + GlobalChat.hexColor("#F45959") + phase.getAlivePlayers());
+                ScoreboardFactory.updateEntry(uhcPlayer, "kills", GlobalChat.hexColor("#EC2828") + "Kills: " + GlobalChat.hexColor("#F45959") + uhcPlayer.getKills().get());
                 ScoreboardFactory.updateEntry(uhcPlayer, "border", GameManager.INSTANCE.getBorder().getBorderString(time));
             });
         }
