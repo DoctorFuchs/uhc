@@ -26,14 +26,14 @@ public class HeartDisplay implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
-            updateHeal((Player) event.getEntity());
+         //   updateHeal((Player) event.getEntity());
         }
     }
 
     @EventHandler
     public void onEntityRegainHealth(EntityRegainHealthEvent event) {
         if (event.getEntity() instanceof Player) {
-            updateHeal((Player) event.getEntity());
+           // updateHeal((Player) event.getEntity());
         }
     }
 

@@ -49,6 +49,7 @@ public class UHCConfig {
         world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         world.setGameRule(GameRule.NATURAL_REGENERATION, false);
         world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+        world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
     }
 
     public static void setLobbySettings(World world) {
@@ -65,6 +66,7 @@ public class UHCConfig {
         world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         world.setGameRule(GameRule.DO_ENTITY_DROPS, false);
         world.setGameRule(GameRule.DO_TILE_DROPS, false);
+        world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
     }
 
     public static int getInteger(String key) {
