@@ -29,6 +29,5 @@ public class MobAIRemover implements Listener {
         }
         event.getEntity().setAI(false);
         event.getEntity().setCustomName("No AI = No Lag :)");
-        event.getEntity().setCustomNameVisible(true);
     }
 }

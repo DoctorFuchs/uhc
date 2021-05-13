@@ -48,7 +48,7 @@ public final class ScoreboardManager implements Listener {
         Player player = event.getPlayer();
         UHCPlayer uhcPlayer = PlayerList.INSTANCE.getPlayer(player);
         if (uhcPlayer.getScoreboard() == null) {
-            ScoreboardFactory.create(uhcPlayer);
+            ScoreboardFactory.create(uhcPlayer, ChatColor.BOLD + "uhc.hglabor.de", false);
             ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
         }
         player.setScoreboard(uhcPlayer.getScoreboard());

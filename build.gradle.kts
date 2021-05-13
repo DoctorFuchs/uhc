@@ -12,8 +12,8 @@ val localProps = Properties()
 localProps.load(file("local.properties").reader())
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
     jcenter()
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
@@ -24,21 +24,6 @@ repositories {
     maven { url = uri("https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/") }
     maven { url = uri("https://repo.codemc.org/repository/maven-public/") }
     // COMMAND API
-    maven {
-        credentials {
-            username = localProps.getProperty("gpr.user") ?: System.getenv("USERNAME")
-            password = localProps.getProperty("gpr.key") ?: System.getenv("TOKEN")
-        }
-        url = uri("https://maven.pkg.github.com/HGLabor/HGLaborUtils")
-    }
-    maven {
-        credentials {
-            username = localProps.getProperty("gpr.user") ?: System.getenv("USERNAME")
-            password = localProps.getProperty("gpr.key") ?: System.getenv("TOKEN")
-        }
-        url = uri("https://maven.pkg.github.com/HGLabor/Localization")
-    }
-
     // AnvilGUI
     maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven { url = uri("https://mvn.intellectualsites.com/content/repositories/releases/") }  //FAWE
@@ -49,7 +34,7 @@ dependencies {
     compileOnly("org.bukkit:craftbukkit:1.16.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.fawe:FAWE-Bukkit:1.16-583")
     implementation("dev.jorel:commandapi-shade:5.8")
-    implementation("de.hglabor:hglabor-utils:0.0.7")
+    implementation("de.hglabor:hglabor-utils:0.0.11")
     implementation("de.hglabor:localization:0.0.6")
     implementation("net.axay:kspigot:1.16.26")
 }

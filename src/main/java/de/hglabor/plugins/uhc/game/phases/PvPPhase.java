@@ -30,7 +30,7 @@ public class PvPPhase extends IngamePhase {
             }
         });
         if (timer == border.getNextShrinkTime()) {
-            border.run();
+            border.run(false);
         }
     }
 

@@ -53,9 +53,11 @@ public class Border {
         }
     }
 
-    public void run() {
+    public void run(boolean force) {
         if (borderSize > SHORTEST_BORDER_SIZE) {
-            nextShrinkTime += SHRINK_INTERVAL;
+            if (!force) {
+                nextShrinkTime += SHRINK_INTERVAL;
+            }
             borderSize = nextBorderSize;
             recalculateBorder();
             if (cutInHalf && borderSize <= 100) {

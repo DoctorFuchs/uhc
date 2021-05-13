@@ -2,7 +2,6 @@ package de.hglabor.plugins.uhc.game.scenarios;
 
 import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.utils.noriskutils.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -28,12 +27,10 @@ public class CutClean extends Scenario {
             return;
         }
         Block block = event.getBlock();
-        Bukkit.broadcastMessage(String.valueOf(block.getType()));
         for (CutCleanItems item : CutCleanItems.values()) {
             if (item.origin.equals(block.getType())) {
                 event.setDropItems(false);
                 ItemStack replacement = new ItemStack(item.replacement);
-                Bukkit.broadcastMessage(String.valueOf(replacement.getAmount()));
                 block.getWorld().dropItem(block.getLocation(), replacement);
                 ExperienceOrb orb = (ExperienceOrb) block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
                 orb.setExperience(item.xpAmount);

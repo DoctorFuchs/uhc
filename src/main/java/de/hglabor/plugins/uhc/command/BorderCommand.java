@@ -20,7 +20,7 @@ public class BorderCommand {
                     return true;
                 })
                 .executesPlayer((player, objects) -> {
-                    GameManager.INSTANCE.run();
+                    GameManager.INSTANCE.getBorder().run(true);
                     player.sendMessage(GlobalChat.getPrefix() + "Border wurde geshrinkt.");
                 }).register();
     }
