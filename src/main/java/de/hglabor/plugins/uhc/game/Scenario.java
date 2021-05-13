@@ -34,8 +34,9 @@ public abstract class Scenario implements Listener {
         isEnabled = enabled;
     }
 
-    public void onPvPPhase() {
-    }
+    public void onFarmPhase() { }
+
+    public void onPvPPhase() { }
 
     public String getName() {
         return name;

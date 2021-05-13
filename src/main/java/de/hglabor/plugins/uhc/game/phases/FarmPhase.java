@@ -8,7 +8,6 @@ import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
 import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.plugins.uhc.game.mechanics.CombatLogger;
-import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.mechanics.chat.BroadcastType;
 import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
@@ -42,7 +41,6 @@ public class FarmPhase extends IngamePhase {
         Bukkit.getPluginManager().registerEvents(CombatLogger.INSTANCE, Uhc.getPlugin());
         Bukkit.broadcastMessage(GlobalChat.getPrefix() + GlobalChat.hexColor("#F45959") + "You are now able to relog");
         for (Player player : Bukkit.getOnlinePlayers()) {
-            HeartDisplay.INSTANCE.enableHealthBar(player);
             player.sendTitle( GlobalChat.hexColor("#EC2828") + "UHC" + ChatColor.WHITE + " | " + GlobalChat.hexColor("#F45959") + "Farmphase",
                     ChatColor.GOLD + "gl hf", 20, 20, 20);
             player.setHealth(20);
@@ -52,7 +50,7 @@ public class FarmPhase extends IngamePhase {
             PotionUtils.removePotionEffects(player);
         }
         //SCENARIOS
-        GameManager.INSTANCE.getScenarios().stream().filter(Scenario::isEnabled).forEach(Scenario::onPvPPhase);
+        GameManager.INSTANCE.getScenarios().stream().filter(Scenario::isEnabled).forEach(Scenario::onFarmPhase);
     }
 
     @Override
