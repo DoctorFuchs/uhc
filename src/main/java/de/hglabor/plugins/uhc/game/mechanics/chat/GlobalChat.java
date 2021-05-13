@@ -59,9 +59,9 @@ public class GlobalChat implements Listener {
     public void enable(boolean enable) {
         isEnabled = enable;
         if (enable) {
-            Bukkit.broadcastMessage(getPrefix() + GlobalChat.hexColor("#F45959") + ChatColor.BOLD + "CHAT HAS BEEN ENABLED");
+            Bukkit.broadcastMessage(getPrefix() + ChatColor.GREEN + ChatColor.BOLD + "CHAT HAS BEEN ENABLED");
         } else {
-            Bukkit.broadcastMessage(getPrefix() + ChatColor.RED + ChatColor.BOLD + "CHAT HAS BEEN DISABLED");
+            Bukkit.broadcastMessage(getPrefix() + GlobalChat.hexColor("#F45959") + ChatColor.BOLD + "CHAT HAS BEEN DISABLED");
         }
     }
 }
