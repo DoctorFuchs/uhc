@@ -14,6 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scoreboard.Criterias;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 public final class ScoreboardManager implements Listener {
     public final static ScoreboardManager INSTANCE = new ScoreboardManager();
@@ -50,6 +54,13 @@ public final class ScoreboardManager implements Listener {
         if (uhcPlayer.getScoreboard() == null) {
             ScoreboardFactory.create(uhcPlayer, ChatColor.BOLD + "uhc.hglabor.de", false);
             ScoreboardManager.setBasicScoreboardLayout(uhcPlayer);
+            if (uhcPlayer.getScoreboard() != null) {
+                Scoreboard scoreboard = uhcPlayer.getScoreboard();
+                Objective objective = scoreboard.registerNewObjective("showhealth", Criterias.HEALTH, Criterias.HEALTH);
+                objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+                objective.setDisplayName(ChatColor.RED + "Health");
+                objective.getScore(ChatColor.WHITE + "").setScore(0);
+            }
         }
         player.setScoreboard(uhcPlayer.getScoreboard());
     }

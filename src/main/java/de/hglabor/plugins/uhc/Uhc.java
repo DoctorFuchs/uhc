@@ -5,7 +5,6 @@ import de.hglabor.plugins.uhc.config.CKeys;
 import de.hglabor.plugins.uhc.config.UHCConfig;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.mechanics.GoldenHead;
-import de.hglabor.plugins.uhc.game.mechanics.HeartDisplay;
 import de.hglabor.plugins.uhc.game.mechanics.MobAIRemover;
 import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.scenarios.*;
@@ -57,6 +56,8 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(DoubleHealth.INSTANCE);
         gameManager.addScenario(FlowerPower.INSTANCE);
         gameManager.addScenario(Shieldless.INSTANCE);
+        gameManager.addScenario(DoNotDisturb.INSTANCE);
+        gameManager.addScenario(Potionless.INSTANCE);
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
@@ -88,7 +89,6 @@ public final class Uhc extends JavaPlugin {
         pluginManager.registerEvents(ScoreboardManager.INSTANCE, this);
         pluginManager.registerEvents(GoldenHead.INSTANCE, this);
         pluginManager.registerEvents(GlobalChat.INSTANCE, this);
-        pluginManager.registerEvents(HeartDisplay.INSTANCE, this);
         pluginManager.registerEvents(new MobAIRemover(), this);
     }
 

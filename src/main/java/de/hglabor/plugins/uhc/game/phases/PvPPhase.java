@@ -3,6 +3,7 @@ package de.hglabor.plugins.uhc.game.phases;
 import de.hglabor.plugins.uhc.game.GameManager;
 import de.hglabor.plugins.uhc.game.GamePhase;
 import de.hglabor.plugins.uhc.game.PhaseType;
+import de.hglabor.plugins.uhc.game.Scenario;
 import de.hglabor.plugins.uhc.game.mechanics.border.Border;
 import de.hglabor.plugins.uhc.game.mechanics.chat.GlobalChat;
 import de.hglabor.plugins.uhc.game.scenarios.Timber;
@@ -18,6 +19,7 @@ public class PvPPhase extends IngamePhase {
     @Override
     protected void init() {
         Timber.INSTANCE.setEnabled(false);
+        GameManager.INSTANCE.getScenarios().stream().filter(Scenario::isEnabled).forEach(Scenario::onPvPPhase);
     }
 
     @Override
