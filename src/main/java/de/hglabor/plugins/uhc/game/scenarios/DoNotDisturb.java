@@ -19,7 +19,7 @@ public class DoNotDisturb extends Scenario {
     public final static DoNotDisturb INSTANCE = new DoNotDisturb();
 
     private DoNotDisturb() {
-        super("NoCleanPlus", new ItemBuilder(Material.NETHERITE_LEGGINGS).build());
+        super("DoNotDisturb", new ItemBuilder(Material.LEAD).build());
     }
 
     static HashMap<Player, NoCleanPlusThread> threads = new HashMap<>();
