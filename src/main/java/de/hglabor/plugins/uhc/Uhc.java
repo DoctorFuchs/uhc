@@ -59,6 +59,7 @@ public final class Uhc extends JavaPlugin {
         gameManager.addScenario(Shieldless.INSTANCE);
         gameManager.addScenario(DoNotDisturb.INSTANCE);
         gameManager.addScenario(Potionless.INSTANCE);
+        gameManager.addScenario(NoThrowable.INSTANCE);
         gameManager.run();
 
         GoldenHead.INSTANCE.register();
